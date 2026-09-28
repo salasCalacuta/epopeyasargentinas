@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boceto · Estética Age of Empires (marcha de Liniers)</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@600;800&display=swap");
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Nunito, system-ui, sans-serif;
+      background: #1a120c;
+      color: #fff8e8;
+    }
+    .top {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 16px 8px;
+      text-align: center;
+    }
+    .top h1 {
+      font-family: Cinzel, serif;
+      margin: 0;
+      font-size: clamp(1.2rem, 3.5vw, 1.9rem);
+    }
+    .top p { margin: 6px 0 0; opacity: .9; font-size: .92rem; }
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      background: #3d2914;
+      border: 1px solid #d4a017;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: .72rem;
+      font-weight: 800;
+      color: #ffe9a8;
+    }
+    .stage {
+      position: relative;
+      max-width: 1100px;
+      margin: 10px auto;
+      height: min(58vh, 520px);
+      border: 4px solid #5c3a1e;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,.55);
+      background: #000 center/cover no-repeat;
+      transition: background-image .8s ease;
+    }
+    .vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.55) 100%);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .rain, .dust {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity .6s;
+    }
+    .rain.on { opacity: 1; background-image: linear-gradient(120deg, transparent 40%, rgba(200,230,255,.35) 50%, transparent 60%); background-size: 8px 24px; animation: rain 0.35s linear infinite; }
+    .dust.on { opacity: 1; background: radial-gradient(circle, rgba(220,190,120,.25), transparent 60%); animation: dust 3s ease-in-out infinite; }
+    .caption {
+      position: absolute;
+      left: 16px; right: 16px; bottom: 16px;
+      z-index: 6;
+      background: rgba(20,12,8,.72);
+      border: 2px solid #d4a017;
+      border-radius: 10px;
+      padding: 10px 14px;
+      backdrop-filter: blur(4px);
+    }
+    .caption strong {
+      font-family: Cinzel, serif;
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: #ffe9a8;
+    }
+    .caption span { font-size: .88rem; line-height: 1.35; opacity: .95; }
+    .army {
+      position: absolute;
+      bottom: 18%;
+      left: -20%;
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      z-index: 5;
+      animation: march 12s linear infinite;
+      filter: drop-shadow(0 6px 4px rgba(0,0,0,.45));
+    }
+    .soldier {
+      width: 34px; height: 48px;
+      border-radius: 8px 8px 4px 4px;
+      position: relative;
+      animation: walk 0.55s ease-in-out infinite;
+    }
+    .soldier:nth-child(2n) { animation-delay: .12s; height: 44px; }
+    .soldier:nth-child(3n) { animation-delay: .24s; }
+    .soldier.hero {
+      width: 52px; height: 58px;
+      background: linear-gradient(#4a7c59, #234d32);
+      border: 2px solid #163d1e;
+      border-radius: 10px;
+      z-index: 2;
+    }
+    .soldier.hero::after {
+      content: "♞";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+    }
+    .soldier.mil {
+      background: linear-gradient(#6a9e4a, #3d6b2f);
+      border: 2px solid #25441c;
+    }
+    .soldier.mil::after {
+      content: "†";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff8e8;
+      font-weight: 900;
+    }
+    .controls {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 8px 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+    button {
+      font-family: inherit;
+      font-weight: 800;
+      border: 2px solid #d4a017;
+      background: linear-gradient(#5c3a1e, #3d2914);
+      color: #fff8e8;
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    button.active { background: linear-gradient(#d4a017, #8b6914); color: #2a1c12; }
+    button:hover { filter: brightness(1.08); }
+    .cost {
+      max-width: 1100px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 800px) { .cost { grid-template-columns: 1fr; } }
+    .card {
+      background: #2a1c12;
+      border: 2px solid #8b6914;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: .86rem;
+      line-height: 1.4;
+    }
+    .card h3 {
+      font-family: Cinzel, serif;
+      margin: 0 0 6px;
+      font-size: .95rem;
+      color: #ffe9a8;
+    }
+    .ok { color: #8fdf9a; font-weight: 800; }
+    .mid { color: #ffd36b; font-weight: 800; }
+    .hi { color: #ff8f8f; font-weight: 800; }
+    @keyframes march {
+      from { transform: translateX(0); }
+      to { transform: translateX(130%); }
+    }
+    @keyframes walk {
+      0%,100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
+    }
+    @keyframes rain {
+      from { background-position: 0 0; }
+      to { background-position: 20px 40px; }
+    }
+    @keyframes dust {
+      0%,100% { transform: scale(1); opacity: .4; }
+      50% { transform: scale(1.08); opacity: .7; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h1>Boceto · Marcha de Liniers (estilo Age of Empires)</h1>
+    <p>Mapa pintado, tropas que avanzan, clima y escenarios. No modifica el juego actual.</p>
+    <span class="badge">Solo demo visual · tocá las etapas</span>
+  </div>
+
+  <div class="stage" id="stage" style="background-image:url('assets/boceto-aoe-camino.jpg')">
+    <div class="rain" id="rain"></div>
+    <div class="dust" id="dust"></div>
+    <div class="army" id="army"></div>
+    <div class="vignette"></div>
+    <div class="caption">
+      <strong id="cap-title">Camino de barro</strong>
+      <span id="cap-text">Desde la mirada de Liniers: la milicia avanza por el barro hacia Buenos Aires. Recursos bajos, ritmo alto, animación continua.</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button type="button" class="active" data-i="0">1 · Barro / camino</button>
+    <button type="button" data-i="1">2 · Tormenta</button>
+    <button type="button" data-i="2">3 · Calles angostas</button>
+    <button type="button" data-i="3">4 · Frente al Fuerte</button>
+  </div>
+
+  <div class="cost">
+    <div class="card">
+      <h3>Opción A · Viable ahora</h3>
+      <p class="ok">Esfuerzo medio</p>
+      <p>Fondos pintados + tropas 2D animadas + lluvia/humo en CSS/Canvas. Se siente “tipo AoE” sin motor 3D. Encaja en tu web actual.</p>
+    </div>
+    <div class="card">
+      <h3>Opción B · AoE casi real</h3>
+      <p class="mid">Esfuerzo alto</p>
+      <p>Muchos sprites, IA de aldeanos, edificios, pathfinding. Semanas/meses de arte + programación. Mejor con motor (Godot) que con HTML suelto.</p>
+    </div>
+    <div class="card">
+      <h3>Opción C · Clonar AoE 3D</h3>
+      <p class="hi">No recomendable</p>
+      <p>Unity/Unreal, equipo de arte, mucho presupuesto. Para un juego escolar/histórico web, es sobre-dimensionado.</p>
+    </div>
+  </div>
+
+  <script>
+    const stages = [
+      {
+        img: "assets/boceto-aoe-camino.jpg",
+        title: "Camino de barro",
+        text: "La columna miliciana avanza con Liniers al frente. El mapa “respira”: polvo, pisadas, marcha continua.",
+        rain: false, dust: true
+      },
+      {
+        img: "assets/boceto-aoe-tormenta.jpg",
+        title: "Tormenta",
+        text: "Lluvia y viento frenan la marcha. La animación del clima hace la campaña más cinematográfica para jóvenes.",
+        rain: true, dust: false
+      },
+      {
+        img: "assets/boceto-aoe-calles.jpg",
+        title: "Calles angostas",
+        text: "Combate urbano estilo RTS: casas coloniales, barricadas, choque de milicias. Feedback visual claro, sin sangre excesiva.",
+        rain: false, dust: true
+      },
+      {
+        img: "assets/boceto-aoe-fuerte.jpg",
+        title: "Frente al Fuerte",
+        text: "Clímax: el fuerte junto al río. Formación patriota acercándose. El “plus” está en la llegada animada, no en el dado.",
+        rain: false, dust: false
+      }
+    ];
+
+    const army = document.getElementById("army");
+    army.innerHTML = '<div class="soldier hero" title="Liniers"></div>' +
+      Array.from({ length: 9 }, () => '<div class="soldier mil"></div>').join("");
+
+    const stageEl = document.getElementById("stage");
+    const rain = document.getElementById("rain");
+    const dust = document.getElementById("dust");
+    const buttons = [...document.querySelectorAll(".controls button")];
+
+    function go(i) {
+      const s = stages[i];
+      stageEl.style.backgroundImage = `url('${s.img}')`;
+      document.getElementById("cap-title").textContent = s.title;
+      document.getElementById("cap-text").textContent = s.text;
+      rain.classList.toggle("on", s.rain);
+      dust.classList.toggle("on", s.dust);
+      buttons.forEach((b, idx) => b.classList.toggle("active", idx === i));
+      army.style.animation = "none";
+      void army.offsetWidth;
+      army.style.animation = "march 12s linear infinite";
+    }
+
+    buttons.forEach((b) => b.onclick = () => go(Number(b.dataset.i)));
+    go(0);
+  </script>
+</body>
+</html>

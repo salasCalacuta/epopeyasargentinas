@@ -1,0 +1,26 @@
+[
+  {
+    "version": "1.16",
+    "fecha": "2026-09-28",
+    "cambios": [
+      "PWA instalable en Android (manifest + service worker)",
+      "Preparación para GitHub y Render.com",
+      "Servidor listo para HTTPS/0.0.0.0 y secretos por entorno",
+      "Sin canal APK/AAB"
+    ]
+  },
+  {
+    "version": "1.15",
+    "fecha": "2026-09-27",
+    "cambios": [
+      "Túnel fijo opcional, vigilancia y pestaña Sitio en admin"
+    ]
+  },
+  {
+    "version": "1.14",
+    "fecha": "2026-09-26",
+    "cambios": [
+      "Correcciones de intro/historial y admin /tefi"
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "emailAviso": "",
+  "puerto": 3460,
+  "usuario": "leo",
+  "clave": "juego",
+  "intervaloSegundos": 60,
+  "tunel": {
+    "modo": "quick",
+    "token": "",
+    "hostname": "",
+    "nota": "Para URL fija: en Cloudflare Zero Trust creá un túnel, copiá el token aquí, poné modo=token y hostname=tu-dominio. Sin token, cada quick tunnel genera otra URL."
+  },
+  "smtp": {
+    "host": "",
+    "puerto": 587,
+    "usuario": "",
+    "clave": "",
+    "remitente": ""
+  }
+}

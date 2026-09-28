@@ -1,0 +1,222 @@
+[
+  {
+    "pregunta": "Según el material de 5.º, ¿por qué los británicos buscaron nuevos mercados hacia 1806?",
+    "opciones": [
+      "Porque España les ofreció libre comercio en América",
+      "Por el bloqueo continental francés, que les impedía vender en Europa",
+      "Porque querían fundar colonias agrícolas en el sur"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — Las Invasiones Inglesas"
+  },
+  {
+    "pregunta": "¿Qué puerto estratégico del Río de la Plata intentaron conquistar los oficiales británicos en 1806?",
+    "opciones": [
+      "Valparaíso",
+      "Buenos Aires",
+      "Lima"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — Las Invasiones Inglesas"
+  },
+  {
+    "pregunta": "¿En qué fecha desembarcaron los ingleses en Quilmes durante la primera invasión?",
+    "opciones": [
+      "25 de junio de 1806",
+      "12 de agosto de 1806",
+      "25 de mayo de 1810"
+    ],
+    "correcta": 0,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "¿Quién comandaba a las fuerzas británicas que ocuparon Buenos Aires en junio de 1806?",
+    "opciones": [
+      "John Whitelocke",
+      "William Carr Beresford",
+      "Home Popham solamente, sin tropas de tierra"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "Ante el avance inglés, ¿qué hizo el virrey Rafael de Sobremonte?",
+    "opciones": [
+      "Organizó la defensa en la Plaza Mayor y venció a Beresford",
+      "Tomó el dinero y riquezas de la ciudad y se marchó a Córdoba",
+      "Firmó de inmediato la rendición y entregó el Fuerte"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "¿Qué ocurrió con el botín que Sobremonte llevaba hacia Córdoba?",
+    "opciones": [
+      "Llegó intacto a Córdoba y financió la reconquista",
+      "Fue interceptado por los británicos y enviado a la Corona inglesa",
+      "Lo escondieron los vecinos en Quilmes"
+    ],
+    "correcta": 1,
+    "bonus": true,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "El 27 de junio de 1806, ¿qué hicieron los británicos en Buenos Aires?",
+    "opciones": [
+      "Se retiraron a Montevideo sin combatir",
+      "Se apoderaron del Fuerte, ocuparon la ciudad y Beresford se declaró gobernador",
+      "Entregaron el mando al Cabildo español"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "¿Quién encabezó la resistencia local para reconquistar Buenos Aires en 1806?",
+    "opciones": [
+      "Manuel Belgrano como único jefe militar",
+      "Santiago de Liniers, capitán de origen francés al servicio de España",
+      "Juan Manuel de Rosas"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "Según el texto escolar, ¿dónde combatieron las fuerzas locales contra los ingleses en la reconquista de 1806?",
+    "opciones": [
+      "En los Corrales de Miserere y en la Plaza Mayor",
+      "Solo en la costa de Quilmes",
+      "Únicamente en Montevideo"
+    ],
+    "correcta": 0,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "¿Qué día de 1806 presentó Beresford su rendición tras la primera invasión?",
+    "opciones": [
+      "25 de junio de 1806",
+      "12 de agosto de 1806",
+      "7 de julio de 1807"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "Después de la victoria de 1806, ¿qué previó Liniers?",
+    "opciones": [
+      "Que España enviaría una flota a Londres",
+      "Que los ingleses volverían a intentar invadir",
+      "Que el virreinato se independizaría ese mismo año"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La primera invasión inglesa"
+  },
+  {
+    "pregunta": "En la segunda invasión (1807), ¿quién comandaba a las fuerzas británicas?",
+    "opciones": [
+      "William Carr Beresford",
+      "John Whitelocke",
+      "Rafael de Sobremonte"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La segunda invasión inglesa"
+  },
+  {
+    "pregunta": "Además de atacar Buenos Aires, ¿qué puertos ocuparon los ingleses en 1807?",
+    "opciones": [
+      "Solo Valparaíso y Callao",
+      "Colonia, Maldonado y Montevideo",
+      "Rosario y Santa Fe"
+    ],
+    "correcta": 1,
+    "bonus": true,
+    "fuente": "Curricula5to — La segunda invasión inglesa"
+  },
+  {
+    "pregunta": "¿Cómo se defendió Buenos Aires cuando ingresaron los ingleses en 1807?",
+    "opciones": [
+      "Con una flota española llegada de Cádiz",
+      "Con barricadas, ataques desde azoteas, piedras, agua hirviendo y disparos",
+      "Abandonando la ciudad y refugiándose en Córdoba"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La segunda invasión inglesa"
+  },
+  {
+    "pregunta": "¿Qué resultado tuvo la defensa porteña frente a Whitelocke?",
+    "opciones": [
+      "Los ingleses ocuparon la ciudad durante un año",
+      "Pese a poca instrucción militar, las milicias se impusieron y Whitelocke firmó la rendición el 7 de julio",
+      "Sobremonte recuperó el mando y expulsó a Liniers"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La segunda invasión inglesa"
+  },
+  {
+    "pregunta": "Según el impacto de las invasiones, ¿qué medida británica benefició a estancieros y comerciantes del Río de la Plata?",
+    "opciones": [
+      "El restablecimiento del monopolio español",
+      "La reglamentación del libre comercio durante el breve gobierno británico",
+      "La prohibición de exportar cueros"
+    ],
+    "correcta": 1,
+    "bonus": true,
+    "fuente": "Curricula5to — El impacto de las invasiones"
+  },
+  {
+    "pregunta": "Tras las invasiones, ¿qué pasó con las milicias según el material escolar?",
+    "opciones": [
+      "Desaparecieron al terminar el combate",
+      "Se convirtieron en cuerpos permanentes y empezaron a participar en la vida política",
+      "Fueron reemplazadas solo por tropas enviadas desde España"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — El impacto de las invasiones; Diseño curricular 2.º ciclo"
+  },
+  {
+    "pregunta": "El diseño curricular del 2.º ciclo señala a las invasiones inglesas como un factor que influyó en…",
+    "opciones": [
+      "La fundación de la Universidad de Córdoba en 1613",
+      "El proceso revolucionario y el rol creciente de las milicias en Buenos Aires",
+      "La sanción de la Constitución de 1853 solamente"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "2ciclo_Areas — Eje sociedades a través del tiempo"
+  },
+  {
+    "pregunta": "¿Qué institución convocó a vecinos y milicias para organizar la defensa en 1807?",
+    "opciones": [
+      "La Real Audiencia de Charcas",
+      "El Cabildo",
+      "El Consulado de Londres"
+    ],
+    "correcta": 1,
+    "bonus": false,
+    "fuente": "Curricula5to — La segunda invasión inglesa"
+  },
+  {
+    "pregunta": "¿Cuál es una consecuencia social destacada de las Invasiones Inglesas en la población local?",
+    "opciones": [
+      "Perdió todo interés por los asuntos de la ciudad",
+      "Al organizarse y defender el territorio, parte de la población se identificó más con los asuntos locales",
+      "Abandonó las milicias y dejó la política en manos exclusivas del virrey"
+    ],
+    "correcta": 1,
+    "bonus": true,
+    "fuente": "Curricula5to — El impacto de las invasiones"
+  }
+]

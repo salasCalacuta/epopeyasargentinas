@@ -1,0 +1,43 @@
+# Dependencias y builds
+node_modules/
+web/node_modules/
+**/package-lock.json
+app/node_modules/
+app/android/
+app/www/
+app/dist/
+app/.gradle/
+
+# Secretos y runtime local
+.env
+.env.*
+!.env.example
+web/.agente/
+web/url-publica.txt
+web/data/stats.json
+web/data/ads.json
+web/data/ads/*
+!web/data/ads/.gitkeep
+
+# Capacitor / APK (ya no se usa este canal)
+tools/
+*.apk
+*.aab
+*.jks
+keystore.properties
+
+# Godot
+.godot/
+*.import
+.mono/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.cursor/
+*.log
+web/.agente/*.log
+
+# Material pesado opcional (PDFs locales)
+MaterialSeba/*.pdf
+MaterialSeba/**/*.pdf

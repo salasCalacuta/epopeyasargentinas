@@ -1,0 +1,129 @@
+TÉRMINOS Y CONDICIONES
+
+Los presentes términos y condiciones generales (en adelante, los “ Términos y Condiciones ”) rigen la relación entre los usuarios de la plataforma (en adelante la “ Plataforma ”) y UDW Desarrollos. (en adelante, “ UDW ”).
+Los presentes Términos y Condiciones fueron puestos a disposición de todos los Usuarios – y debidamente aceptados- por quien otorgó la información de ingreso y contrató los servicios de UDW. No obstante, el ingreso a la Plataforma implica la aceptación inmediata y sin reserva de los presentes Términos y Condiciones. En consecuencia, el Usuario manifiesta haber leído y aceptado en su totalidad los Términos y Condiciones; dicha aceptación es indispensable para la utilización de la Plataforma. Si no está de acuerdo con los presentes Términos y Condiciones rogamos no utilizar la Plataforma.
+
+1. Descripción de la Plataforma
+
+1.1. La Plataforma es una plataforma de gestión y soluciones administrativas a través de la cual los Usuarios podrán acceder y gestionar información de sincronización entre distintas plataformas ajenas a UDW. Si cualquiera de esas otras plataformas generara información errónea o malintencionada, no es responsabilidad de UDW.
+
+1.2. Podrán interactuar con la Plataforma diferentes categorías de Usuarios, conforme se los describe a continuación y en la Plataforma. Cada categoría de Usuario podrá acceder a diferentes módulos y tendrá autorización para visualizar determinada información y/o realizar determinadas acciones en la Plataforma.
+
+2. Usuarios
+
+2.1. Serán Usuarios de la Plataforma las personas asignadas por el responsable de la empresa que adquirió la licencia de la Plataforma como toda persona humana que sea validada como Usuario por dichas instituciones (en adelante, los “ Usuarios ”).
+
+2.2. Para utilizar la Plataforma los Usuarios deberán estar registrados en ella e ingresar con usuario y contraseña (en adelante, las “ Credenciales de Acceso ”). La registración será realizada por UDW.
+
+2.3. Será responsabilidad de los Usuarios mantener en confidencialidad sus credenciales de acceso a la Plataforma y no compartirla con otros Usuarios.
+
+2.4. Existen diferentes categorías de Usuarios: (i) Usuario Colaborador, que tendrá acceso a determinadas categorías o secciones; (ii) Usuario Encargado, que podrá, a su criterio, modificar las categorías de Usuarios Colaborador. En tal caso, podrán visualizarse en la Plataforma.
+
+2.5. Cada categoría de Usuario podrá acceder a diferentes módulos o contenidos y tendrá autorización para visualizar determinada información y/o realizar determinadas acciones en la Plataforma.
+
+3. Procedimiento de Registración
+
+3.1. El registro de los Usuarios tiene por finalidad establecer una identificación de usuario y puede ser completado por el propio Usuario o por UDW. En aquellos casos en que UDW complete el registro del Usuario, UDW asumirá la totalidad de las obligaciones que en estos Términos y Condiciones se asignan al Usuario.
+
+3.2. El Usuario declara y garantiza que toda la información suministrada a los fines de la registración es verdadera y completa y se compromete a mantenerla actualizada y/o a mantener a UDW informada de cualquier actualización, rectificación o ratificación que fuera necesaria.
+
+3.3. UDW definirá una contraseña que le permitirá acceder a la Plataforma. Esta información es personal e intransferible, debiendo el Usuario evitar que terceras personas puedan acceder a ella, quedando entendido que cualquier acción realizada en la Plataforma mediante el nombre de usuario y contraseña elegidos por UDW será imputada a dicho Usuario. Si el Usuario advirtiera que su nombre de usuario y contraseña perdieron su carácter de confidencialidad y/o están siendo utilizados por terceros, deberá informar en forma inmediata a UDW a fin de que tome las medidas necesarias.
+
+3.4. Será responsabilidad del Usuario mantener actualizada su información personal, ya sea actualizándola en la Plataforma o informando a UDW, según corresponda.
+
+3.5. La Plataforma podrá rechazar cualquier solicitud de registración o, cancelar una registración previamente aceptada, sin que tal decisión deba ser justificada, y sin que ello genere derecho alguno en beneficio del Usuario.
+
+3.6. La Plataforma utilizará la información suministrada por el Usuario con el objeto de permitir al Usuario utilizar la Plataforma.
+
+4. Protección de Datos Personales
+
+4.1. La Plataforma cumple con todos los principios y obligaciones previstos en la Ley de Protección de Datos Personales N° 25.326 y la normativa complementaria (en adelante, la “ NORMATIVA DE PROTECCIÓN DE DATOS PERSONALES ”).
+
+4.2. La Plataforma no tratará datos personales de los Usuarios. Únicamente accederá a información disociada obtenida de la interacción de los Usuarios con la Plataforma. Dicha información será utilizada únicamente a los fines del registro de los Usuarios. En caso de que el Usuario solicite a UDW, expresamente y por escrito, que trate datos personales y/o información almacenada en la Plataforma, UDW realizará dicho tratamiento por cuenta y orden del Usuario y siguiendo las instrucciones del mismo.
+
+4.3. La Plataforma se compromete a adoptar todos los recaudos que sean necesarios para garantizar la seguridad de los datos personales del Usuario, inclusive la prevención de procesamientos no autorizados o ilegítimos, pérdida accidental, destrucción o daños a dichos datos personales. Asimismo, la Plataforma se compromete a adoptar todas las medidas que sean necesarias para garantizar que toda persona que tenga acceso a los datos personales del Usuario les dé el tratamiento detallado en esta cláusula.
+
+4.4. Si el Usuario quisiera ejercer el derecho de acceso a sus datos personales, deberá comunicarse con UDW.
+
+5. Notificaciones y comunicaciones
+
+5.1. A los fines de que los Usuarios puedan tomar contacto con la Plataforma, se considerarán válidas las comunicaciones dirigidas al correo electrónico indicado en la Plataforma como correo de contacto o el correo que oportunamente informe la UDW a tales fines. Las notificaciones enviadas por correo electrónico se considerarán recibidas únicamente si la Plataforma responde dicho correo electrónico confirmando la recepción. 
+
+5.2. Las notificaciones y comunicaciones cursadas por la Plataforma a la casilla de correo electrónico que haya denunciado el usuario al momento de registrarse se considerarán eficaces y plenamente válidas. Asimismo se considerarán eficaces las comunicaciones que consistan en avisos y mensajes insertos en la Plataforma, que tengan por finalidad informar a los usuarios sobre determinada circunstancia.
+
+6. Condiciones técnicas de acceso a la Plataforma
+
+6.1. Para acceder y utilizar la Plataforma se requiere de un dispositivo con un mínimo de 20 GB de disco rígido libre, 4 GB de RAM y una conexión estable a internet. Cualquier otro requisito que sea necesario, como así también las versiones de los sistemas operativos compatibles con la Plataforma serán informados en la Plataforma.
+
+6.2. El acceso a la Plataforma será por exclusiva cuenta y cargo de cada Usuario.
+
+6.3. Los requisitos técnicos podrán ser actualizados por la Plataforma en cualquier momento. 
+
+7. Propiedad Intelectual
+
+7.1. Todos los derechos de propiedad intelectual de la Plataforma, corresponden a UDW. A título meramente enunciativo, se entenderán incluidos las imágenes, fotografías, diseños, gráficos, sonidos, compilaciones de datos, marcas, nombres, títulos, designaciones, signos distintivos, y todo otro material accesible a través de la Plataforma.
+
+7.2. UDW se reserva todos los derechos sobre la Plataforma, no cede ni transfiere a favor del Usuario ningún derecho sobre su propiedad intelectual. En consecuencia, su reproducción, distribución, y/o modificación está prohibida. Cualquier actividad de recolección automática de información de la Plataforma (incluyendo pero sin limitarse a web scrapping ) será considerada una violación a los presentes Términos y Condiciones.
+
+7.3. Los derechos de propiedad intelectual respecto de los criterios de selección y/o disposición del contenido y/o de los módulos de la Plataforma corresponden exclusivamente a UDW, quedando estrictamente prohibido al Usuario utilizar los módulos, las categorías y/o cualquier información de la Plataforma con otra finalidad distinta a la indicada en los presentes Términos y Condiciones.
+
+7.4. En caso de que los Usuarios puedan adaptar o parametrizar los aspectos visuales de la Plataforma, tales adaptaciones o parametrizaciones se entenderán licenciadas a la Plataforma en forma gratuita, mundial y perpetua para su utilización en la Plataforma.
+
+8. Operatividad de la Plataforma
+
+8.1. UDW no garantiza el pleno acceso y operatividad de la Plataforma en forma ininterrumpida.
+
+8.2. UDW podrá suspender el acceso a la Plataforma, total o parcialmente, y/o a determinados módulos por motivos de mantenimiento o de seguridad en cualquier momento.
+
+9. Responsabilidad de la Plataforma
+
+9.1. La administración de las credenciales de acceso de los Usuarios está bajo el exclusivo cargo y responsabilidad de los Usuarios.
+
+9.2. UDW no controla ni examina el contenido creado por los Usuarios y/o la información almacenada en la Plataforma. El Usuario es el único responsable por la licitud y exactitud de dichos contenidos y/o información. Sin perjuicio de ello, si UDW advirtiera un uso ilegítimo de la Plataforma y/o contenido que viole derechos de terceros y/o la moral y las buenas costumbres y/o reciba una denuncia respecto de determinado material o contenido alojado en la Plataforma, podrá eliminarlo sin que ello genere derecho a indemnización alguna a favor del Usuario.
+
+9.3. En ningún caso UDW será responsable por lucro cesante, pérdida de chance, daño moral, daño físico ni por cualquier consecuencia mediata y/o causal, daños punitivos ni de cualquier otra naturaleza.
+
+9.4. UDW no verifica los datos personales de los Usuarios ni la relación entre los Usuarios. Los Usuarios son los únicos responsables por la veracidad y exactitud de la información que incorporen en la Plataforma.
+
+9.5. UDW no será responsable por mal funcionamiento, imposibilidad de acceso o malas condiciones de uso de la Plataforma debido al uso de equipos inadecuados, interrupciones o saturación de la red de Internet y/o por cualquier otra razón.
+
+10. Dirección y control sobre la Plataforma 
+
+10.1. Facultades reservadas
+
+10.1.1. UDW a se reserva todas las facultades de control y dirección de la Plataforma. Podrá en consecuencia introducir todos los cambios y modificaciones que estime convenientes a su solo criterio, podrá agregar, alterar, sustituir o suprimir cualquiera de los servicios o contenidos de la Plataforma en todo momento.
+
+10.1.2. UDW podrá modificar los presentes Términos y Condiciones en cualquier momento, quedando entendido que los cambios entrarán en vigencia a partir de su publicación en la Plataforma. La Plataforma podrá pero no está obligada a enviar un correo electrónico al Usuario notificando las modificaciones.
+
+10.1.3. Sin perjuicio de estas facultades reservadas, la Plataforma no ejercerá un control de legalidad directo sobre las actividades llevadas adelante por los Usuarios. Consecuentemente no será responsable por de las actividades realizadas por los Usuarios ni garantiza que los datos proporcionados por estos, relativos a su identidad sean veraces y fidedignos.
+
+10.2. Responsabilidades en relación a la Plataforma
+
+10.2.1. Cada Usuario será el único responsable por las acciones que lleve adelante dentro de la Plataforma. Todas las acciones realizadas en la Plataforma serán asignadas al Usuario al que correspondan las Credenciales de Acceso que son únicas e intransferibles para dicho Usuario. La empresa será solidariamente responsable con el Usuario de cualquier daño que pudiera generar el Usuario con sus acciones en la Plataforma.
+
+11. Utilización de la Plataforma
+
+Los Usuarios deberán utilizar la Plataforma de conformidad con las disposiciones establecidas en estos Términos y Condiciones y con las instrucciones contenidas en la Plataforma y los lineamientos impartidos por UDW; con el ordenamiento jurídico al que se encuentren sometidos en razón del lugar, de las personas, o de la materia de la cual se trate, considerado en su conjunto; y según las pautas de conducta impuestas por la moral, las buenas costumbres y el debido respeto a los derechos de terceros.
+
+12. Uso prohibido de la Plataforma
+
+12.1. Queda terminantemente prohibido usar la Plataforma con el objeto de lesionar los derechos de terceros o contravenir el orden jurídico, como así también toda actividad que constituya una práctica ofensiva a la moral y las buenas costumbres.
+
+12.2. En particular, se considerará como uso prohibido toda actividad que:
+Resulte ofensiva para los derechos personalísimos de los individuos, con especial referencia al derecho al honor, a la dignidad, a la intimidad, a no ser objeto de tratos discriminatorios, a la salud, a la imagen, y a la libre expresión de las ideas; con absoluta independencia del cuerpo legal donde tales derechos adquieran reconocimiento.
+Infrinja los derechos de propiedad intelectual de terceros. Posea contenido inapropiado.
+Tenga por objeto vulnerar la seguridad y/o el normal funcionamiento de la Plataforma o de terceros.
+Induzca, instigue o promueva acciones delictivas, ilícitas, disfuncionales o moralmente reprochables, o constituya una violación de derechos de propiedad intelectual de terceras personas.
+Tenga por objeto recolectar información de terceros con el objeto de remitirles publicidad o propaganda de cualquier tipo o especie. 
+
+12.3. Medidas de control
+Sin perjuicio de las acciones legales que nazcan en cabeza de la Plataforma o de terceros, cuando el uso de la Plataforma, llevado adelante por parte de un Usuario pueda ser referido como un uso prohibido, la Plataforma tomará las medidas que considere convenientes según su exclusivo criterio, pudiendo suspender o impedir el acceso la Plataforma, y sin que para ello deba mediar comunicación previa alguna.
+
+13. Finalización del Servicio
+La Plataforma podrá, a su sola discreción, suspender temporal o definitivamente la cuenta de un Usuario, sin que medie previa notificación al mismo, y sin que sea necesaria la invocación de causa alguna, procediéndose en tal caso a la eliminación de toda la información relacionada con la cuenta.
+
+14. Legislación aplicable y jurisdicción
+
+14.1. A todos los efectos legales en relación a la Plataforma, será aplicable la legislación vigente en la República Argentina.
+
+14.2. Toda controversia que se suscite entre las partes con relación a estos Términos y Condiciones, su existencia, validez, calificación, interpretación, alcance, cumplimiento o resolución, se someterá a la jurisdicción y competencia exclusiva de los Tribunales Ordinarios en lo Comercial con asiento en la Ciudad Autónoma de Buenos Aires.

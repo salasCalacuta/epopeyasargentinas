@@ -1,0 +1,195 @@
+LICENCIAS DE USO
+
+PRIMERO: OBJETO
+
+1.1. UDW permitirá al Cliente y a todas aquellas personas autorizadas por el Cliente (en adelante, los “ Usuarios ”) a acceder, en forma local, a la Plataforma – a través de la aplicación que será oportunamente informado al Cliente a fin de que puedan utilizar los módulos de gestión y las soluciones tecnológicas que se describen en el Anexo 1 de la presente Licencia (en adelante, el “ Servicio ”).
+
+1.2. El Servicio comprende: (i) la realización de todas las actualizaciones necesarias, durante la vigencia de la Licencia, a fin de que la Plataforma funcione correctamente y en los términos del Anexo 1 ; y (ii) la asistencia técnica y capacitación necesaria para la correcta utilización de la Plataforma.
+
+1.3. La asistencia técnica será brindada a través de consultas por correo electrónico, de lunes a viernes de 10:00 a 18:00 horas.
+
+1.4. El Cliente dispondrá de la infraestructura tecnológica necesaria en el/los Servidor/es Remoto/s correspondiente/s, para la utilización de la Plataforma o el soporte brindado por UDW.
+
+SEGUNDO: ÁMBITO DE APLICACIÓN. INTEGRACIÓN. CARGA DE INFORMACIÓN
+
+2.1. La presente Licencia es personal, limitada, no exclusiva ni transferible, y no implica la concesión de ningún otro derecho sobre ningún otro software diferente al de la Plataforma.
+
+2.2. Los términos de la presente Licencia son complementarios de los términos y condiciones de uso de la Plataforma (en adelante, los “ TyC ”) que deberán ser aceptados por el Cliente y por todos los Usuarios de la Plataforma para poder utilizarla. El Cliente se compromete irrevocablemente a obtener la aceptación de los TyC presentes de parte de los usuarios a los que permita el uso de la Plataforma.
+
+2.3. La presente Licencia está limitada a la utilización de la Plataforma en la República Argentina.
+
+2.4. Una vez activada la Licencia, la Plataforma deberá ser configurada y parametrizada para su utilización. La configuración y parametrización de la Plataforma deberá realizarla el administrador designado por UDW.
+
+2.5. El Cliente deberá cargar en la Plataforma la totalidad de la información necesaria para su correcto funcionamiento siguiendo con los lineamientos que se indiquen en la Plataforma (en adelante, la “ Información ”). La falta de carga de la Información podría generar que la Plataforma no funcione correctamente.
+
+2.6. UDW podrá realizar, por única vez, la carga inicial de Información en la Plataforma. En tal caso, dicha acción será realizada por empleados de UDW , por cuenta y orden del Cliente y siguiendo las instrucciones que el Cliente le indique. Para ello, el Cliente deberá poner a disposición de UDW la Información en el formato requerido.
+
+2.7. Una vez finalizada la carga inicial de la Información y activada la Licencia, el Cliente se compromete a mantener la Información actualizada para el correcto funcionamiento de la Plataforma. El Cliente es el único responsable por la actualización de la Información en la Plataforma.
+
+2.8. El Cliente declara y garantiza a UDW que toda la Información que se incorpore en la Plataforma es cierta, exacta y se encuentra actualizada y se compromete a mantenerla actualizada en todo momento.
+
+TERCERO: VIGENCIA
+
+3.1. La Licencia se otorga por el plazo indicando en la Orden de Servicio correspondiente.
+
+3.2. UDW podrá rescindir la Licencia en cualquier momento y sin expresión de causa debiendo notificar por escrito a la otra con una antelación de al menos 30 (treinta) días corridos a la fecha de finalización. En tal caso, la Licencia quedará sin efecto ni valor alguno, no generándose ningún derecho de compensación o penalidad alguna a favor del Cliente.
+
+3.3. Queda entendido que el plazo de vigencia se computará por mes calendario, por lo que si la contratación por parte del Cliente se hubiera realizado en un día que no coincidiera con el primer día de un mes determinado, el plazo inicial será hasta el último día de dicho mes, y a partir del mes siguiente será por mes completo, del primero al último día del mes.
+
+CUARTO: CONTRAPRESTACIÓN
+
+La Licencia es onerosa. Por lo tanto, el Cliente pagará a UDW las sumas que hubieran acordado en la Orden de Servicio correspondiente, en los términos y en los plazos allí indicados. El Licenciante acepta una merma en la cantidad de usuarios registrados en la Plataforma (“Cantidad de Usuarios Enrolados”) de hasta el 10% en base a la Cantidad de Usuarios Enrolados en el primer mes de vigencia de la Licencia o del promedio de los últimos 12 (doce) meses, sin que esto se considere una baja parcial de los servicios contratados, lo que en caso de superarse el Cliente deberá atenerse a lo establecido en la Cláusula 2.3., pudiendo en dicho caso el Licenciante facturar y cobrar el Precio en base en la Cantidad de Usuarios Enrolados en cualquiera de los períodos de los últimos 12 (doce) meses, más allá de la Cantidad de Usuarios Enrolados existentes en dicha fecha.
+
+QUINTO: DECLARACIONES Y GARANTIAS DE EDUCARIA 
+
+UDW declara y garantiza al Cliente que:
+
+5.1. Posee las autorizaciones necesarias con relación a la Plataforma y la celebración de la presente Licencia.
+
+5.2. Posee la experiencia y la capacidad técnica, operativa y los recursos humanos necesarios para brindar el Servicio y garantizar el acceso y utilización de la Plataforma en los términos previstos en esta Licencia.
+
+SEXTO : DECLARACIONES Y GARANTÍAS DEL CLIENTE 
+
+El Cliente declara y garantiza a UDW que:
+
+6.1. La utilización de la Plataforma no resulta incompatible con la normativa aplicable al Cliente en relación a su actividad; 
+
+6.2. No requiere validación y/o autorización de un tercero para utilizar la Plataforma; 
+
+SÉPTIMO : REQUISITOS TÉCNICOS PARA ACCEDER A LA PLATAFORMA
+
+7.1. A fin de poder utilizar la Plataforma, el Cliente deberá cumplir con los requisitos técnicos mínimos exigidos por UDW.
+
+7.2. Los requisitos técnicos mínimos podrán ser actualizados por UDW en cualquier momento. En tal caso, serán publicados en la Plataforma con 10 (diez) días de anticipación, salvo que la modificación se deba a cuestiones de seguridad de la Plataforma.
+
+7.3. Adicionalmente, el Cliente deberá contar con tecnologías de detección de virus y otras amenazas, quedando entendido que es responsabilidad exclusiva del Cliente mantener sus equipos tecnológicos actualizados en materia de seguridad informática.
+
+7.4. Queda entendido que el incumplimiento de cualquiera de los requisitos técnicos podría afectar la funcionalidad y/u operabilidad de la Plataforma.
+
+OCTAVO : RESTRICCIONES
+
+8.1. El Cliente no podrá sublicenciar a terceros, comercializar, modificar, adaptar, o traducir ninguna parte de la Plataforma y/o de sus contenidos. Tampoco podrá utilizar técnicas de ingeniería inversa, descompilar ni desensamblar la Plataforma.
+
+8.2. El Cliente deberá utilizar la Plataforma únicamente para fines lícitos, quedando estrictamente prohibida su utilización para finalidades ilícitas, inmorales y/o que puedan afectar los derechos de terceros o vulnerar cualquier normativa que resulte aplicable.
+
+NOVENO : ACTUALIZACIONES
+
+9.1. UDW podrá realizar actualizaciones y/o modificaciones en la Plataforma, sus contenidos y/o módulos con la finalidad de incluir, eliminar o modificar elementos a fin de optimizar su utilización. Todas las modificaciones indicadas serán informadas y el Cliente puede negarse a recibirlas, quedando bajo su responsabilidad futuras fallas en la Plataforma.
+
+9.2. No obstante, UDW no asume ninguna obligación de realizar actualizaciones en virtud de cambios en las versiones de sistemas operativos  o a los fines de compatibilizar el uso de la Plataforma con sistemas operativos que no sean soportados y/o con la infraestructura del Cliente.
+
+DÉCIMO : OBLIGACIONES DEL CLIENTE
+
+Además del resto de las obligaciones que surgen de esta LICENCIA, el CLIENTE se compromete a:
+
+10.1. Utilizar la Plataforma según las indicaciones y especificaciones previstas en la Licencia y en los TyC;
+
+10.2. Validar adecuadamente la identidad de los Usuarios que designe en la Plataforma;
+
+10.3. Obtener las autorizaciones correspondientes para que los Usuarios puedan acceder y utilizar la Plataforma como así también para tratar sus datos personales en la misma. En este último caso, deberán obtener el consentimiento libre, expreso e informado de los titulares de datos personales, en los términos de la Ley 25.326 y normativa complementaria;
+
+10.4. Utilizar la Plataforma únicamente para fines relacionados con la actividad desarrollada por el Cliente;
+
+10.5. Participar en las capacitaciones que UDW le proponga para el correcto funcionamiento de la Plataforma;
+
+10.6. No utilizar la Plataforma para la realización de actividades contrarias a las leyes, a la moral, las buenas costumbres o que infrinjan la normativa que regule la actividad del Cliente;
+
+10.7. Asegurarse que toda la Información alojada en la Plataforma sea lícita, veraz, de su titularidad y/o que tenga la autorización correspondiente para alojarla en la Plataforma.
+
+10.8. Garantizar a UDW la correcta utilización de la Plataforma, evitando la carga excesiva y simultánea de Información con la finalidad de desbordar la capacidad de la Plataforma y/o la realización de acciones que puedan ocasionar o ser consideradas como un ataque de denegación de servicio (DDOS).
+
+UNDÉCIMO : PROTECCIÓN DE DATOS PERSONALES
+
+11.1. Las Partes declaran y garantizan que cumplen con todos los principios y obligaciones previstos en la Ley de Protección de Datos Personales N° 25.326 y la normativa complementaria (en adelante, la “ Normativa de Protección de Datos Personales ”). En particular, el Cliente declara y garantiza a UDW que cumple con todos los principios y obligaciones previstos en la Normativa de Protección de Datos Personales y, en consecuencia, sus bases de datos se encuentran debidamente registradas y todos los datos personales que se almacenen en la Plataforma fueron obtenidos en cumplimiento de los principios previstos en la Normativa de Protección de Datos Personales. En tal sentido, el Cliente declara y garantiza a UDW que tiene el consentimiento libre, expreso e informado de los titulares de los datos personales de todos los datos personales que incorpore la Plataforma.
+
+11.2. En el caso de que el Cliente hiciera uso de alguna de las herramientas disponibles que permiten la extracción de la Información de la Plataforma, será el único responsable de que dicha Información se trate dando cumplimiento a los requisitos de seguridad y confidencialidad exigibles por la Normativa de Protección de Datos Personales. Esta exigencia implicará que el Cliente responderá ante terceros por el tratamiento y custodia de dicha Información de acuerdo con la Normativa de Protección de Datos Personales.
+
+11.3. Los datos personales que el Cliente hubiera proporcionado a UDW serán utilizados únicamente a los fines del cumplimiento de las obligaciones previstas en esta Licencia.
+
+11.4. UDW no tratará los datos personales almacenados en la Plataforma, con excepción de que el Cliente lo solicite expresamente y por escrito. En tal caso, el tratamiento será realizado por cuenta y orden del Cliente y siguiendo las instrucciones del Cliente.
+
+11.5. Los datos personales del Cliente, como así también la Información, estará alojada en un servidor local propiedad del Cliente. UDW declara y garantiza que cumple con la Normativa de Protección de Datos Personales y, en particular, con la Disposición 60/2016 de la Dirección Nacional de Protección de Datos Personales en relación a la transferencia internacional de datos personales. En caso de que fuera necesario el consentimiento de los Usuarios, el Cliente se compromete a obtener dicho consentimiento, en los términos de la Normativa de Protección de Datos Personales.
+
+11.6. El Cliente mantendrá indemne a UDW y libre y exenta de toda responsabilidad por el cumplimiento de las obligaciones y principios de la Normativa de Protección de Datos Personales respecto del tratamiento de datos personales. La obligación de indemnidad incluye pero no se limita al pago de todo gasto (incluyendo pero sin limitarse a penalidades, multas y honorarios de abogados), daño o perjuicio que deba afrontar o le sea impuesto a UDW con motivo del tratamiento de los datos personales que realice el Cliente.
+
+11.7. Una vez finalizada la relación con el Cliente, por cualquier causa, UDW eliminará definitivamente de la Plataforma toda la Información del Cliente, incluyendo pero sin limitarse a la Información que el Cliente hubiera almacenado en la Plataforma. Previo a ello, le dará un plazo de 15 (quince) días para que el Cliente pueda descargar la Información, quedando entendido que UDW no garantiza que pueda descargar la totalidad de la Información.
+
+DUODÉCIMO : PRIVACIDAD Y CONFIDENCIALIDAD DE LA INFORMACIÓN
+
+12.1. Con la finalidad de resguardar su privacidad y la confidencialidad de la Información, el Cliente y los Usuarios deberán mantener en estricto secreto los datos de “nombre de usuario” y “contraseña” que les son requeridos para acceder a la Plataforma. Si considerasen que esa información ha podido ser accedida por terceras personas, el Cliente a través de su representante legal o apoderado con facultades suficientes, deberá dar aviso de tal circunstancia a UDW mediante correo electrónico o los canales previamente establecidos, a los fines de que UDW tome las medidas tendientes a preservar la confidencialidad y privacidad de la Información bloqueando al/los usuario/s que resulten necesario.
+
+12.2. La Plataforma cuenta con diversas medidas de seguridad que, de acuerdo con el estado de la técnica, permiten resguardar la Información. No obstante, el Cliente tiene conocimiento de que el medio de comunicación utilizado para el acceso puede sufrir filtraciones o intercomunicaciones no deseadas por las Partes, asumiendo la obligación de mantener indemne a UDW de cualquier reclamo que tenga como fundamento una interferencia y/o filtración de información.
+
+12.3. La administración de las credenciales de acceso de los Usuarios quedará a cargo y bajo responsabilidad del Cliente y UDW no tendrá acceso a dicha Información.
+
+12.4. Las Partes no divulgarán o revelarán a terceras personas el contenido y alcance de la Licencia, de los documentos firmados dentro del marco de la misma, y de cualquier otra información a la que pudieran acceder con motivo o en ocasión del cumplimiento de la Licencia, cualquiera fuese su naturaleza, sin contar con el consentimiento escrito previo de la otra Parte. Cualquier violación al deber de confidencialidad hará incurrir a la Parte incumplidora en la obligación de indemnizar a la otra Parte por los daños y perjuicios ocasionados. Las Partes no estarán sujetas a la obligación de confidencialidad acordada en esta cláusula cuando: (i) la divulgación hubiera sido ordenada por autoridad judicial o administrativa, debiendo la Parte requerida notificar previamente a la otra y realizar sus mejores esfuerzos para que la autoridad otorgue carácter confidencial a la información revelada; (ii) la información hubiera sido publicada y/o forme parte del dominio público, por causas ajenas a actos u omisiones de las Partes; y (iii) la divulgación de la Información fuera necesaria para el cumplimiento de la Licencia.
+
+DÉCIMO TERCERO : PROPIEDAD INTELECTUAL. MARCAS
+
+13.1. El Cliente acepta que ninguna cláusula o mención incluida en esta Licencia implica que el Cliente y/o los Usuarios adquieran titularidad alguna respecto de los derechos de propiedad intelectual de la Plataforma y/o sus contenidos y/o sus módulos. El Cliente acepta que UDW - y/u otra empresa del grupo- es el único titular de la totalidad de los derechos de propiedad intelectual (incluyendo, en particular pero sin limitación marcas, patentes y cualquier otro derecho de propiedad) la Plataforma y que UDW posee todas las autorizaciones necesarias para celebrar la presente Licencia.
+
+13.2. Los contenidos de las pantallas y aplicaciones de la Plataforma constituyen propiedad exclusiva de UDW incluyendo sin limitación sus imágenes, diseño, compilaciones, código, sonidos, archivos, marcas, títulos, designaciones, menciones, signos distintivos, logos, y todo aquel material que lo conforma. UDW se reserva todos los derechos sobre el material, y no cede ni transfiere a favor del Cliente ni de los Usuarios ningún derecho sobre su propiedad intelectual. El uso indebido y la reproducción total o parcial de los contenidos antes mencionados quedan prohibidos.
+
+13.3. Las marcas UDW, Cálculos Producción, MLSync, Mensajería Integral, Lista Proveedores, CRM, Administración Enfocada, Reloj Sueldos, Servicio Técnico o cualquier otro desarrollo generado a futuro bajo su marca como así también sus logotipos son de propiedad exclusiva de UDW. El Cliente no podrá utilizar dichas marcas sin la autorización expresa y por escrito por parte de UDW.
+
+13.4. En caso de que el Cliente y/o los Usuarios puedan adaptar o parametrizar los aspectos visuales de la Plataforma y/o crear contenido y/o secciones dentro de la Plataforma, tanto las adaptaciones visuales como el contenido se entenderán licenciados a UDW en forma gratuita y perpetua para su utilización en la Plataforma.
+
+DÉCIMO CUARTO : INCUMPLIMIENTO Y TERMINACIÓN
+
+14.1. En el caso de que una de las Partes incumpliera cualquiera de las cláusulas pactadas o cualquiera de las obligaciones nacidas del presente Licencia, la Parte cumplidora deberá intimar a la Parte incumplidora, quien dispondrá de un plazo máximo de treinta (30) días calendario para subsanar dicho incumplimiento. De no producirse tal subsanación en el plazo establecido la Parte cumplidora podrá resolver la Licencia de pleno derecho, sin perjuicio de la indemnización por los daños y perjuicios que le pudiera corresponder, lo cual será notificado a la Parte incumplidora en forma fehaciente por la Parte cumplidora al vencimiento del plazo.
+
+14.2. UDW tendrá derecho a finalizar en forma inmediata y sin necesidad de preaviso la Licencia cuando el Cliente realice acciones o actos que dañen o puedan dañar a la Plataforma y/o la imagen de UDW o bien, porque el Cliente no cumple con las condiciones esenciales bajo las cuales se otorga esta Licencia. En tal caso, UDW comunicará al Cliente la finalización de la Licencia y revocará el acceso del Cliente y los Usuarios a la Plataforma. La finalización tendrá efecto en forma inmediata y no generará derecho a indemnización alguna a favor del Cliente.
+
+DÉCIMO QUINTO : REGLAS DE PRUEBA
+
+15.1. Las constancias emanadas de registros de UDW , sea cual fuera el soporte de dichos registros (incluyendo pero sin limitarse a registros electrónicos, magnéticos, ópticos, etc.) constituirán prueba suficiente y concluyente de los actos y operaciones realizadas entre las Partes a efectos de resolver cualquier controversia que pudiera surgir entre las Partes.
+
+15.2. En caso de contradicción entre las constancias emanadas de los registros de UDW y las constancias emanadas de los registros del Cliente, prevalecerán las constancias emanadas de los registros de UDW .
+
+15.3. La fe de las constancias de UDW subsistirá hasta el momento en que, mediante sentencia judicial firme de tribunal competente, se declare judicialmente su falsedad.
+
+DÉCIMO SEXTO : RESPONSABILIDAD DE UDW
+
+16.1. UDW responderá únicamente por los daños y perjuicios que se deriven en forma directa y exclusiva de algún incumplimiento a las obligaciones asumidas en esta Licencia. Respecto de estos daños, UDW responderá únicamente por el daño emergente, excluyéndose toda responsabilidad de UDW respecto de rubros tales como lucro cesante, pérdida de chance, daño moral, daños físicos, o cualquier otro.
+
+16.2. UDW no será en ningún caso responsable de: (a) los costos, costas, multas, sanciones, indemnizaciones, cargos, daños u honorarios o cualquier otro concepto que se derive como consecuencia del incumplimiento por el Cliente de sus obligaciones; (b) el contenido, uso y publicación de datos o informaciones y/o comunicaciones distribuidas por el Cliente a través de la Plataforma así como el uso y los resultados obtenidos de los mismos; y (c) los daños y perjuicios que pudieran generarse como consecuencia del incumplimiento del Cliente a la normativa de Protección de Datos Personales. 
+El Cliente es el único responsable de: (a) el uso que realice de la Plataforma; y (b) el cumplimiento íntegro de cualquier normativa que resulte aplicable a su actividad.
+
+16.3. UDW no será responsable de los problemas derivados de la falta de acceso o de los problemas inherentes a la conectividad a Internet o a las redes de electricidad del Cliente.
+
+16.4. UDW no interviene en la creación, transmisión ni en la puesta a disposición de la Información que se almacena en la Plataforma y no ejerce ninguna clase de control previo ni garantiza la licitud, infalibilidad y utilidad de los contenidos transmitidos, difundidos, almacenados, recibidos, obtenidos, puestos a disposición o accesibles a través o por medio de la Plataforma, declinando cualquier responsabilidad que de ello se pudiese derivar. El Cliente es el único responsable frente a cualquier reclamo o acción legal, judicial o extrajudicial, iniciada por los Usuarios de la Plataforma y/o terceras personas tanto contra el Cliente como contra UDW , relativa a la infracción de derechos de terceros y/o de normativas aplicables que se deriven del contenido alojado en la Plataforma. El Cliente se obliga a mantener indemne e indemnizar a UDW de todos los gastos, costos, indemnizaciones, y cualquier suma de dinero que sean pagadas por UDW con motivo de tales reclamaciones o acciones legales.
+
+16.5. UDW no será responsable del mantenimiento de la estructura tecnológica del Cliente y las interrupciones o el indebido funcionamiento de la Plataforma como consecuencia de ello.
+
+16.6. El Cliente mantendrá indemne a UDW y libre y exenta de responsabilidad por reclamos de los Usuarios y/o terceros que estén vinculados con el uso de la Plataforma.
+
+DÉCIMO SÉPTIMO : MISCELÁNEAS
+
+17.1. El Cliente no podrá ceder ni transferir -total o parcialmente- la presente Licencia ni los derechos que surgen de la misma.
+
+17.2. La presente Licencia no crea relación de exclusividad alguna para ninguna de las Partes, quienes podrán celebrar libremente acuerdos similares con terceros.
+
+17.3. En caso de que con motivo de la celebración y/o ejecución de esta Licencia se tuviese que tributar impuesto de sellos, dicho impuesto será abonado en partes iguales por UDW y el Cliente.
+
+17.4. Esta Licencia, incluyendo sus Anexos y los TyC, y la Orden de Servicio correspondiente, constituye la totalidad del acuerdo celebrado entre las Partes con respecto a su objeto, y prevalece sobre cualquier acuerdo anterior, convenio y/o negociación que las Partes pudieran haber llevado a cabo con respecto a dichas cuestiones.
+
+17.5. El hecho de que alguna de las Partes no reclame algún derecho que le confiere esta Licencia no podrá interpretarse como una renuncia a reclamar en el futuro el mismo derecho.
+
+17.6. UDW fija su domicilio en Av San Martin 3521 - Florida Oeste - Buenos Aires (1602) y/o udw.desarrollos@gmail.com y el Cliente en el domicilio indicado en la Orden de Servicio. En dichos domicilios serán válidas todas las notificaciones judiciales y extrajudiciales que se cursen con motivo de la LICENCIA. Queda entendido entre las Partes que las notificaciones o comunicaciones enviadas a los correos electrónicos indicados precedentemente se considerarán recibidas únicamente si el destinatario responde dicho correo electrónico confirmando la recepción. En caso de que el domicilio constituido por UDW se modifique por cualquier motivo, se comunicará mediante correo electrónico al Cliente y/o a través de la Plataforma.
+
+17.7. La presente Licencia se rige exclusivamente por la normativa vigente en la República Argentina.
+
+17.8. Cualquier controversia que pudiera surgir entre las Partes con relación a la Licencia será sometida a la jurisdicción y competencia exclusiva de los Tribunales Ordinarios en lo Comercial con asiento en la Ciudad Autónoma de Buenos Aires
+
+Anexo 1 
+
+Descripción de la Plataforma
+
+La Plataforma consiste en una herramienta de gestión integral para empresas. Cuenta con diferentes funcionalidades según los módulos y/o planes contratados por cada empresa
+
+La Plataforma se encuentra totalmente local en un computador propiedad del Cliente, se accede con una aplicación propiedad de UDW. Las funcionalidades difieren de acuerdo al perfil del usuario que ingresa y el dispositivo desde el cual se accede.
+
+UDW podrá en cualquier momento modificar, agregar, y/o eliminar módulos y funcionalidades en la Plataforma. En tal caso, los nuevos módulos y/o funcionalidades serán informados a través de la Plataforma.
+
+La aceptación de esta Licencia indica que el Cliente está de acuerdo con todos los puntos mencionados. En caso de no coincidir con algún punto, por favor, comunicarse a los medios de contactos de la empresa, mencionados anteriormente.
+ 

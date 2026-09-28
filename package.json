@@ -1,0 +1,13 @@
+{
+  "name": "epopeyas-argentinas",
+  "version": "1.16.0",
+  "private": true,
+  "description": "Epopeyas Argentinas — web PWA + servidor Node",
+  "scripts": {
+    "start": "node web/server.js",
+    "start:web": "node web/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

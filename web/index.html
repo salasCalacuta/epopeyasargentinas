@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#4a2e1c" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Epopeyas" />
+  <meta name="description" content="Epopeyas Argentinas — juego educativo sobre la invasión inglesa de 1806." />
+  <title>Epopeyas Argentinas 1.16</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css?v=135" />
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="top-brand">
+        <h1>Epopeyas Argentinas</h1>
+        <div class="top-tools">
+          <button type="button" id="btn-historial" class="tool-btn">Historial</button>
+          <button type="button" id="btn-stats" class="tool-btn">Estadísticas</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="screen show" id="sc-titulo">
+      <div class="hero kenburns" id="titulo-img" style="background-image:url('assets/cinematica-flota-inglesa.jpg')">
+        <div class="info-puntos" id="titulo-puntos"></div>
+      </div>
+      <div class="block anim-in">
+        <h2>Nivel 1</h2>
+        <p class="caption" id="titulo-texto">Invasión inglesa de Bs As, 1806. Buenos Aires se sometió al ejército británico y Beresford ocupó el Fuerte. Algunos criollos se refugian en Montevideo para preparar la resistencia. Pasó más de un mes y los patriotas están listos para la Reconquista. ¡A por ellos!</p>
+        <button class="primary wide" id="btn-intro">Ver introducción</button>
+        <div class="info-fichas" id="titulo-fichas"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="sc-intro">
+      <div class="cine anim-in">
+        <div class="hero" id="intro-img">
+          <div class="hero-split-row" id="intro-split" hidden>
+            <div class="hero-half" id="intro-half-izq"><span class="hero-half-tag" id="intro-tag-izq"></span></div>
+            <div class="hero-half" id="intro-half-der"><span class="hero-half-tag" id="intro-tag-der"></span></div>
+          </div>
+          <div class="info-puntos" id="intro-puntos"></div>
+        </div>
+        <p class="paso" id="intro-paso">1 / 6</p>
+        <p class="caption" id="intro-texto"></p>
+        <p class="info-hint" id="intro-hint" hidden>Pulsá los puntos del mapa o las imágenes para más información.</p>
+        <div class="info-sitios" id="intro-sitios" hidden></div>
+        <div class="row-btns">
+          <button class="act pass" id="btn-saltar">Saltar</button>
+          <button class="primary" id="btn-seguir-intro">Continuar</button>
+        </div>
+        <div class="info-fichas" id="intro-fichas" hidden></div>
+      </div>
+    </section>
+
+    <section class="screen" id="sc-cartas">
+      <div class="block cartas-screen anim-in">
+        <h2 class="cartas-titulo">Cartas de juego</h2>
+        <div class="panel-misiones">
+          <h3>Misiones</h3>
+          <ul class="mision-list" id="mision-list"></ul>
+        </div>
+        <div class="cartas-duelo">
+          <div class="cartas-bando pat">
+            <div class="cartas-portrait"><img src="assets/retrato-liniers.jpg" alt="Liniers" /></div>
+            <p class="cartas-desc">Sos <strong>Liniers</strong>. 1300 soldados en Montevideo. Pueyrredón espera con 300 más.</p>
+            <div class="cartas-stats">
+              <div class="cartas-stat"><strong id="n-pat">1600</strong><span>Patriotas</span></div>
+              <div class="cartas-stat"><strong id="n-oro-p">3000</strong><span>Oro</span></div>
+              <div class="cartas-stat"><strong id="n-cab-p">0</strong><span>Caballos</span></div>
+              <div class="cartas-stat"><strong id="n-can-p">0</strong><span>Cañones</span></div>
+            </div>
+            <div class="buy-row">
+              <button class="act buy-btn js-compra" data-tipo="milicia" data-bando="p" type="button">Comprar milicia</button>
+              <button class="act buy-btn js-compra" data-tipo="caballo" data-bando="p" type="button">Comprar caballos</button>
+              <button class="act buy-btn js-compra" data-tipo="canon" data-bando="p" type="button">Comprar cañones</button>
+            </div>
+          </div>
+          <div class="cartas-bando en">
+            <div class="cartas-portrait en"><img src="assets/unidad-ingles.png" alt="Ingleses" /></div>
+            <p class="cartas-desc">Beresford y Popham. Primera línea en Retiro: 850 hombres.</p>
+            <div class="cartas-stats">
+              <div class="cartas-stat"><strong id="n-ing">850</strong><span>Ingleses</span></div>
+              <div class="cartas-stat"><strong id="n-oro-e">2000</strong><span>Oro inglés</span></div>
+              <div class="cartas-stat"><strong id="n-cab-e">0</strong><span>Caballos</span></div>
+              <div class="cartas-stat"><strong id="n-can-e">0</strong><span>Cañones</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="log" id="log-cartas"></div>
+        <div class="row-btns mision-row">
+          <button class="primary wide" id="btn-mision-preguntas" type="button">Ir a la misión</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="sc-batalla">
+      <div class="battle-head">
+        <h2 id="bat-titulo">Batalla de Retiro</h2>
+        <p id="bat-dia">Día 1</p>
+      </div>
+      <div class="row-btns bat-panel-btns" id="bat-panel-btns">
+        <button class="act" type="button" id="btn-bat-cartas">Cartas obtenidas</button>
+        <button class="act" type="button" id="btn-bat-misiones">Misiones</button>
+      </div>
+      <p class="hint" id="bat-info"></p>
+      <div class="campo mapa-mision" id="campo">
+        <div class="mapa-zonas" id="mapa-zonas"></div>
+        <div class="army plaza" id="army-pat"></div>
+        <div class="army col1" id="army-en1"></div>
+        <div class="fx" id="fx"></div>
+      </div>
+      <div class="troops">
+        <div class="troops-side ar">
+          <div class="bar ar"><i id="bar-pat"></i><span id="txt-pat">1600</span></div>
+          <p class="troops-pct" id="pct-pat">100%</p>
+        </div>
+        <div class="troops-side en">
+          <div class="bar en"><i id="bar-ing"></i><span id="txt-ing">850</span></div>
+          <p class="troops-pct" id="pct-ing">100%</p>
+        </div>
+      </div>
+      <div class="columnas" id="elige-columna" hidden></div>
+      <div class="row-btns tipo-tropa">
+        <label><input type="radio" name="tipo-p" value="soldados" checked /> Soldados</label>
+        <label id="lbl-caballos"><input type="radio" name="tipo-p" value="caballos" /> Caballos</label>
+        <label id="lbl-canones"><input type="radio" name="tipo-p" value="canones" /> Cañones</label>
+      </div>
+      <div class="row-btns compras-row">
+        <button class="act bat-btn-inline js-compra-bat" data-tipo="milicia" data-bando="p" type="button">Milicia (10)</button>
+        <button class="act bat-btn-inline js-compra-bat" data-tipo="caballo" data-bando="p" type="button">Caballo (50)</button>
+        <button class="act bat-btn-inline js-compra-bat" data-tipo="canon" data-bando="p" type="button">Cañón (150)</button>
+      </div>
+      <p class="casualty" id="bajas"></p>
+      <button class="primary wide bat-btn" id="btn-dia">Tirar dado</button>
+      <div class="log" id="log-bat"></div>
+    </section>
+
+    <section class="screen" id="sc-cierre">
+      <div class="hero kenburns anim-in" id="cierre-img"></div>
+      <div class="block anim-in">
+        <h2 id="cierre-titulo"></h2>
+        <p id="cierre-texto"></p>
+        <button class="primary wide" id="btn-cierre">Continuar</button>
+      </div>
+    </section>
+
+    <div class="overlay" id="ov-pausa">
+      <div class="modal"><button type="button" class="modal-x" data-cerrar="ov-pausa" aria-label="Cerrar">×</button>
+        <h2>Pausa</h2><p>El juego queda detenido.</p>
+        <button class="primary wide" id="btn-reanudar">Seguir</button>
+        <button class="act wide" id="btn-pausa-historial">Historial / retomar</button>
+        <button class="act pass wide" id="btn-pausa-inicio">Inicio</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-historial">
+      <div class="modal modal-historial">
+        <button type="button" class="modal-x" data-cerrar="ov-historial" aria-label="Cerrar">×</button>
+        <h2>Historial de batallas</h2>
+        <p class="hint">Elegí un punto guardado para retomar.</p>
+        <div class="historial-list" id="historial-list"></div>
+        <button class="act wide" id="btn-guardar-punto" type="button">Guardar punto actual</button>
+        <button class="primary wide" id="btn-historial-cerrar" type="button">Cerrar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-stats">
+      <div class="modal modal-stats">
+        <button type="button" class="modal-x" data-cerrar="ov-stats" aria-label="Cerrar">×</button>
+        <h2>Estadísticas</h2>
+        <ul class="stats-list" id="stats-list"></ul>
+        <button class="primary wide" id="btn-stats-cerrar" type="button">Cerrar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-compra">
+      <div class="modal modal-compra">
+        <button type="button" class="modal-x" data-cerrar="ov-compra" aria-label="Cerrar">×</button>
+        <div class="card-popup" id="compra-carta">
+          <strong id="compra-titulo">Comprar</strong>
+          <span id="compra-desc"></span>
+        </div>
+        <p>Oro disponible: <strong id="oro-compra">3000</strong></p>
+        <label class="setting">Cantidad <input type="number" id="cant-compra" min="1" value="10" /></label>
+        <p id="costo-compra"></p>
+        <button class="primary wide" id="btn-confirmar-compra">Confirmar</button>
+        <button class="act pass wide" id="btn-cancelar-compra">Cancelar</button>
+      </div>
+    </div>
+    <div class="overlay overlay-dados" id="ov-dados">
+      <div class="modal modal-dados anim-in">
+        <button type="button" class="modal-x" data-cerrar="ov-dados" aria-label="Cerrar">×</button>
+        <h2 id="dados-titulo">Combate</h2>
+        <div class="dice-board-overlay">
+          <div class="dice-col"><small>🇦🇷 Patriotas</small><div class="dice-set" id="dice-pat-ov"></div></div>
+          <div class="dice-col"><small>🇬🇧 Ingleses</small><div class="dice-set" id="dice-ing-ov"></div></div>
+        </div>
+        <p class="casualty" id="bajas-ov"></p>
+        <button class="primary wide" id="btn-cerrar-dados" hidden>Continuar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-resultados">
+      <div class="modal modal-resultados anim-in">
+        <button type="button" class="modal-x" data-cerrar="ov-resultados" aria-label="Cerrar">×</button>
+        <div class="res-img" id="res-img" hidden></div>
+        <h2 id="res-titulo">Resultados</h2>
+        <div class="res-stats" id="res-stats"></div>
+        <button class="primary wide" id="btn-res-continuar">Continuar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-pregunta">
+      <div class="modal modal-pregunta anim-in">
+        <button type="button" class="modal-x" data-cerrar="ov-pregunta" aria-label="Cerrar">×</button>
+        <div class="preg-img" id="preg-img"></div>
+        <p class="preg-bonus" id="preg-bonus" hidden>★ Pregunta bonus (±200)</p>
+        <h2 id="preg-texto"></h2>
+        <div class="preg-opciones" id="preg-opciones"></div>
+        <p class="preg-resultado" id="preg-resultado"></p>
+        <div id="preg-procer" class="carta-procer-pop" hidden></div>
+        <p class="preg-mas-info" id="preg-mas-info" hidden></p>
+        <button class="primary wide" id="btn-preg-continuar" hidden>Continuar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-panel-bat">
+      <div class="modal">
+        <button type="button" class="modal-x" data-cerrar="ov-panel-bat" aria-label="Cerrar">×</button>
+        <h2 id="panel-bat-titulo">Panel</h2>
+        <ul class="panel-bat-list" id="panel-bat-list"></ul>
+        <button class="primary wide" id="btn-panel-bat-cerrar">Cerrar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-info">
+      <div class="modal modal-info">
+        <button type="button" class="modal-x" data-cerrar="ov-info" aria-label="Cerrar">×</button>
+        <div class="info-img" id="info-img" hidden></div>
+        <h2 id="info-titulo">Información</h2>
+        <p id="info-cuerpo"></p>
+        <p class="info-cita" id="info-cita" hidden></p>
+        <div class="info-sitios" id="info-enlaces"></div>
+        <button class="primary wide" id="btn-info-cerrar" type="button">Cerrar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-recluta-post">
+      <div class="modal">
+        <button type="button" class="modal-x" data-cerrar="ov-recluta-post" aria-label="Cerrar">×</button>
+        <h2>Reclutar milicianos</h2>
+        <p>Podés gastar hasta 2000 de oro en milicia antes de avanzar al Fuerte.</p>
+        <p>Oro: <strong id="oro-recluta">3000</strong></p>
+        <label class="setting">Soldados <input type="number" id="cant-recluta" min="0" value="100" /></label>
+        <p id="costo-recluta"></p>
+        <button class="primary wide" id="btn-recluta-ok">Reclutar y avanzar</button>
+      </div>
+    </div>
+    <div class="overlay" id="ov-columna">
+      <div class="modal modal-columnas">
+        <button type="button" class="modal-x" data-cerrar="ov-columna" aria-label="Cerrar">×</button>
+        <p class="hint" id="columna-hint">Elegí qué columna patriota ataca primero:</p>
+        <div class="col-choice">
+          <button type="button" class="col-pick" data-col="0" id="col-pick-0">
+            <span class="col-foto" style="background-image:url('assets/columna-barricada.jpg')"></span>
+            <span class="col-sangre" aria-hidden="true"></span>
+            <strong>Columna 1</strong>
+            <small>Detrás de la barricada</small>
+          </button>
+          <button type="button" class="col-pick" data-col="1" id="col-pick-1">
+            <span class="col-foto" style="background-image:url('assets/columna-edificios.jpg')"></span>
+            <span class="col-sangre" aria-hidden="true"></span>
+            <strong>Columna 2</strong>
+            <small>Ocultos en los edificios</small>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="overlay" id="ov-ads" hidden>
+      <div class="modal modal-ads">
+        <button type="button" class="modal-x" data-cerrar="ov-ads" aria-label="Cerrar">×</button>
+        <div id="ads-media"></div>
+        <button class="primary wide" id="btn-ads-continuar" type="button">Continuar</button>
+      </div>
+    </div>
+    <footer class="bottom-nav">
+      <button type="button" id="btn-inicio">Inicio</button>
+      <button type="button" id="btn-pausa">Pausa</button>
+      <button type="button" id="btn-volver">Volver</button>
+    </footer>
+    <nav class="legal-nav" aria-label="Documentos legales">
+      <a class="legal-btn" href="privacidad.html" target="_blank" rel="noopener noreferrer">Políticas</a>
+      <a class="legal-btn" href="condiciones.html" target="_blank" rel="noopener noreferrer">Condiciones</a>
+    </nav>
+  </div>
+  <script src="preguntas-banco.js?v=135"></script>
+  <script src="game.js?v=135"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

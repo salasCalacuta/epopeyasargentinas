@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Boceto · Animación de combate (v1.11 intacta)</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@600;800&display=swap");
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Nunito, system-ui, sans-serif; background: #140e0a; color: #2a1c12; }
+    .app { max-width: 520px; margin: 0 auto; min-height: 100vh; background: #c9a66b; }
+    header {
+      background: #1a120c; color: #fff8e8; text-align: center; padding: 12px 14px;
+    }
+    header h1 { font-family: Cinzel, serif; margin: 0; font-size: 1.05rem; }
+    header p { margin: 4px 0 0; font-size: .72rem; opacity: .85; }
+    .warn {
+      background: #fff3cd; border-bottom: 2px solid #d4a017;
+      padding: 8px 12px; font-size: .74rem; font-weight: 800; text-align: center;
+    }
+    .modo { display: flex; gap: 6px; padding: 8px 10px; background: #e8d5a8; }
+    .modo button {
+      flex: 1; border: 2px solid #5c3a1e; background: #fff8e8; border-radius: 8px;
+      padding: 8px; font-weight: 800; font-family: inherit; cursor: pointer; font-size: .78rem;
+    }
+    .modo button.on { background: linear-gradient(#ffe9a8, #e0b84a); }
+
+    /* Pantalla tipo video */
+    .video-stage {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+      border-top: 3px solid #5c3a1e;
+      border-bottom: 3px solid #5c3a1e;
+      background: #000;
+    }
+    .video-stage .frame {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity .25s ease;
+    }
+    .video-stage .frame.on { opacity: 1; animation: ken 1.1s ease-out forwards; }
+    .video-stage .frame.hold { opacity: 1; animation: kenSlow 2.2s ease-out forwards; }
+    .video-stage.playing::after {
+      content: "▶ ANIMACIÓN";
+      position: absolute; top: 10px; left: 10px; z-index: 4;
+      background: rgba(0,0,0,.55); color: #ffe9a8; font-size: .65rem;
+      font-weight: 900; padding: 4px 8px; border-radius: 6px; border: 1px solid #d4a017;
+    }
+    .caption-bar {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+      background: linear-gradient(transparent, rgba(0,0,0,.8));
+      color: #fff8e8; padding: 28px 12px 10px; font-size: .82rem; font-weight: 800;
+    }
+    .flash {
+      position: absolute; inset: 0; z-index: 5; pointer-events: none;
+      background: #fff; opacity: 0;
+    }
+    .flash.on { animation: flash .35s ease; }
+
+    .barras {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      padding: 10px; background: #f3e6c8;
+    }
+    .bar-box {
+      background: #fff8e8; border: 2px solid #5c3a1e; border-radius: 8px; padding: 6px 8px;
+    }
+    .bar-box strong { display: block; font-size: .95rem; }
+    .bar-box small { color: #5a4330; font-size: .72rem; }
+    .fill { height: 8px; border-radius: 4px; margin-top: 4px; background: #ddd; overflow: hidden; }
+    .fill i { display: block; height: 100%; transition: width .4s; }
+    .fill.pat i { background: #2f6b3a; }
+    .fill.ing i { background: #9b2d2d; }
+
+    .panel { padding: 10px; background: #e8d5a8; }
+    .hint { font-size: .8rem; margin: 0 0 8px; font-weight: 700; }
+    .row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .row label {
+      background: #fff8e8; border: 2px solid #5c3a1e; border-radius: 8px;
+      padding: 6px 8px; font-size: .75rem; font-weight: 800;
+    }
+    .primary {
+      width: 100%; border: 3px solid #5c3a1e; background: linear-gradient(#ffe9a8, #e0b84a);
+      border-radius: 10px; padding: 12px; font-weight: 900; font-family: inherit;
+      font-size: .95rem; cursor: pointer;
+    }
+    .primary:disabled { opacity: .5; cursor: not-allowed; }
+    .log {
+      margin-top: 8px; background: #fff8e8; border: 2px dashed #d4a017; border-radius: 8px;
+      padding: 8px; font-size: .72rem; max-height: 88px; overflow: auto;
+    }
+    .note {
+      padding: 10px 12px 16px; background: #1a120c; color: #f3e6c8; font-size: .78rem; line-height: 1.4;
+    }
+
+    .overlay {
+      display: none; position: fixed; inset: 0; background: rgba(20,10,6,.82);
+      z-index: 30; align-items: center; justify-content: center; padding: 16px;
+    }
+    .overlay.show { display: flex; }
+    .modal {
+      background: #f3e6c8; border: 4px solid #5c3a1e; border-radius: 12px;
+      padding: 14px; width: min(400px, 100%); text-align: center;
+    }
+    .dados { display: flex; justify-content: space-around; gap: 12px; margin: 12px 0; }
+    .dado {
+      width: 64px; height: 64px; background: #fff; border: 3px solid #5c3a1e;
+      border-radius: 10px; display: grid; place-items: center; font-size: 1.8rem; font-weight: 900;
+    }
+    .dado.spin { animation: spin .45s linear infinite; }
+    .preg-ops { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+    .preg-ops button {
+      border: 2px solid #5c3a1e; background: #fff8e8; border-radius: 8px; padding: 8px;
+      font-family: inherit; font-weight: 700; font-size: .78rem; cursor: pointer; text-align: left;
+    }
+
+    @keyframes ken {
+      from { transform: scale(1.08); }
+      to { transform: scale(1); }
+    }
+    @keyframes kenSlow {
+      from { transform: scale(1.06) translateX(-1%); }
+      to { transform: scale(1.02) translateX(1%); }
+    }
+    @keyframes flash {
+      0% { opacity: 0; }
+      30% { opacity: .55; }
+      100% { opacity: 0; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Boceto · Combate animado (tipo video)</h1>
+      <p>Fotogramas reales en secuencia · reglas v1.11 · juego original intacto</p>
+    </header>
+    <div class="warn">⚠️ Solo boceto. La versión 1.11 (index.html) no se toca.</div>
+
+    <div class="modo">
+      <button type="button" id="m-dados" class="on">Dados</button>
+      <button type="button" id="m-preg">Preguntas</button>
+    </div>
+
+    <div class="video-stage" id="stage">
+      <div class="frame hold on" id="frame" style="background-image:url('assets/anim-marcha-pat.jpg')"></div>
+      <div class="flash" id="flash"></div>
+      <div class="caption-bar" id="caption">Marcha patriota · esperando combate…</div>
+    </div>
+
+    <div class="barras">
+      <div class="bar-box">
+        <strong id="n-pat">1600</strong>
+        <small>Patriotas · Día <span id="dia">1</span></small>
+        <div class="fill pat"><i id="bar-pat" style="width:100%"></i></div>
+      </div>
+      <div class="bar-box">
+        <strong id="n-ing">850</strong>
+        <small>Ingleses · Retiro</small>
+        <div class="fill ing"><i id="bar-ing" style="width:100%"></i></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="hint">Si ganás (dado o pregunta): secuencia de ataque → inglés herido. Si perdés: patriota herido. No es una foto fija: cambia de fotograma.</p>
+      <div class="row" id="tipos">
+        <label><input type="radio" name="tipo" value="soldados" checked /> Soldados</label>
+        <label><input type="radio" name="tipo" value="caballos" /> Caballos</label>
+        <label><input type="radio" name="tipo" value="canones" /> Cañones</label>
+      </div>
+      <button class="primary" type="button" id="btn-accion">Tirar dado</button>
+      <div class="log" id="log"></div>
+    </div>
+
+    <div class="note">
+      No puedo generar un archivo MP4 real desde aquí. Este boceto simula <strong>video</strong> con fotogramas pintados en secuencia (ataque → resultado). Si te convence, después se puede exportar a GIF/WebM o integrar en el juego sin borrar la v1.11.
+    </div>
+  </div>
+
+  <div class="overlay" id="ov-dados">
+    <div class="modal">
+      <h2>Dados (reglas v1.11)</h2>
+      <div class="dados">
+        <div><small>🇦🇷</small><div class="dado spin" id="d-pat">?</div></div>
+        <div><small>🇬🇧</small><div class="dado spin" id="d-ing">?</div></div>
+      </div>
+      <p id="dados-txt"></p>
+      <button class="primary" type="button" id="btn-dados-ok" hidden>Ver animación</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="ov-preg">
+    <div class="modal">
+      <p id="preg-bonus" hidden style="color:#8b6914;font-weight:900">★ Bonus (±200)</p>
+      <h2 id="preg-texto" style="font-size:.95rem;line-height:1.3"></h2>
+      <div class="preg-ops" id="preg-ops"></div>
+      <p id="preg-res"></p>
+      <button class="primary" type="button" id="btn-preg-ok" hidden>Ver animación</button>
+    </div>
+  </div>
+
+  <script>
+    const MAX_P = 1600, MAX_E = 850;
+    let G = { modo: "dados", dia: 1, patriotas: 1600, ingleses: 850, caballos: 12, canones: 0 };
+    let PREGUNTAS = [], pool = [];
+    let playing = false;
+
+    const FRAMES = {
+      marcha: "assets/anim-marcha-pat.jpg",
+      ataque1: "assets/anim-ataque-1.jpg",
+      ataque2: "assets/anim-ataque-2.jpg",
+      win: "assets/anim-ingles-herido.jpg",
+      lose: "assets/anim-patriota-herido.jpg",
+    };
+
+    const logEl = document.getElementById("log");
+    function log(m) { logEl.innerHTML = `<div>${m}</div>` + logEl.innerHTML; }
+    function d6() { return 1 + Math.floor(Math.random() * 6); }
+    function tipo() {
+      const el = document.querySelector('input[name="tipo"]:checked');
+      return el ? el.value : "soldados";
+    }
+
+    function pintarBarras() {
+      document.getElementById("n-pat").textContent = G.patriotas;
+      document.getElementById("n-ing").textContent = G.ingleses;
+      document.getElementById("dia").textContent = G.dia;
+      document.getElementById("bar-pat").style.width = Math.max(4, (G.patriotas / MAX_P) * 100) + "%";
+      document.getElementById("bar-ing").style.width = Math.max(4, (G.ingleses / MAX_E) * 100) + "%";
+    }
+
+    function showFrame(src, caption, hold) {
+      const stage = document.getElementById("stage");
+      const old = document.getElementById("frame");
+      const next = document.createElement("div");
+      next.className = "frame " + (hold ? "hold" : "") + " on";
+      next.id = "frame";
+      next.style.backgroundImage = `url('${src}')`;
+      stage.insertBefore(next, old);
+      old.classList.remove("on", "hold");
+      setTimeout(() => old.remove(), 280);
+      document.getElementById("caption").textContent = caption;
+    }
+
+    function flash() {
+      const f = document.getElementById("flash");
+      f.classList.remove("on");
+      void f.offsetWidth;
+      f.classList.add("on");
+    }
+
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+    async function playCombateAnim(gano) {
+      if (playing) return;
+      playing = true;
+      document.getElementById("btn-accion").disabled = true;
+      document.getElementById("stage").classList.add("playing");
+
+      showFrame(FRAMES.ataque1, "¡Carga patriota!", false);
+      await sleep(700);
+      flash();
+      showFrame(FRAMES.ataque2, "Choque de líneas…", false);
+      await sleep(750);
+      flash();
+
+      if (gano) {
+        showFrame(FRAMES.win, "Inglés herido · patriotas avanzan", true);
+        log("Animación: inglés herido.");
+      } else {
+        showFrame(FRAMES.lose, "Patriota herido · la línea cede", true);
+        log("Animación: patriota herido.");
+      }
+
+      await sleep(1600);
+      document.getElementById("stage").classList.remove("playing");
+
+      if (G.ingleses <= 0 || (G.ingleses / MAX_E) <= 0.1) {
+        document.getElementById("caption").textContent = "¡Victoria en Retiro! (simulado)";
+        log("Victoria simulada. En v1.11 seguiría a la Barricada.");
+        playing = false;
+        return;
+      }
+      if (G.patriotas <= 0 || (G.patriotas / MAX_P) <= 0.1) {
+        document.getElementById("caption").textContent = "Derrota simulada";
+        log("Derrota simulada. En v1.11: Pueyrredón o retirada.");
+        playing = false;
+        return;
+      }
+
+      G.dia += 1;
+      pintarBarras();
+      showFrame(FRAMES.marcha, "La marcha continúa · Día " + G.dia, true);
+      document.getElementById("btn-accion").disabled = false;
+      playing = false;
+    }
+
+    function resolverBajas(dp, de, t) {
+      const diff = Math.abs(dp - de);
+      let bajaP = 0, bajaE = 0;
+      if (dp > de) {
+        bajaE = diff * 100;
+        if (t === "caballos") bajaE *= 2;
+        if (t === "canones") bajaE *= 3;
+      } else if (de > dp) {
+        bajaP = diff * 100;
+        if (t === "caballos") G.caballos = Math.max(0, G.caballos - diff);
+        if (t === "canones") G.canones = Math.max(0, G.canones - diff);
+      }
+      G.patriotas = Math.max(0, G.patriotas - bajaP);
+      G.ingleses = Math.max(0, G.ingleses - bajaE);
+      return { bajaP, bajaE };
+    }
+
+    function tirarDado() {
+      const t = tipo();
+      if (t === "caballos" && G.caballos < 6) { log("Mín. 6 caballos."); return; }
+      if (t === "canones" && G.canones < 6) { log("Mín. 6 cañones."); return; }
+      document.getElementById("btn-accion").disabled = true;
+      const ov = document.getElementById("ov-dados");
+      ov.classList.add("show");
+      const dpEl = document.getElementById("d-pat");
+      const deEl = document.getElementById("d-ing");
+      dpEl.className = "dado spin"; deEl.className = "dado spin";
+      dpEl.textContent = "?"; deEl.textContent = "?";
+      document.getElementById("btn-dados-ok").hidden = true;
+      document.getElementById("dados-txt").textContent = "Tirando…";
+
+      setTimeout(() => {
+        const dp = d6(), de = d6();
+        const { bajaP, bajaE } = resolverBajas(dp, de, t);
+        dpEl.className = "dado"; deEl.className = "dado";
+        dpEl.textContent = dp; deEl.textContent = de;
+        const txt = `🇦🇷 ${dp} (−${bajaP}) · 🇬🇧 ${de} (−${bajaE})`;
+        document.getElementById("dados-txt").textContent = txt;
+        log(txt);
+        document.getElementById("btn-dados-ok").hidden = false;
+        document.getElementById("btn-dados-ok").onclick = () => {
+          ov.classList.remove("show");
+          pintarBarras();
+          playCombateAnim(dp >= de);
+        };
+      }, 700);
+    }
+
+    function nextQ() {
+      if (!PREGUNTAS.length) return null;
+      if (!pool.length) pool = PREGUNTAS.map((_, i) => i).sort(() => Math.random() - 0.5);
+      return PREGUNTAS[pool.pop()];
+    }
+
+    function abrirPregunta() {
+      const p = nextQ();
+      if (!p) { log("Sin preguntas."); return; }
+      document.getElementById("btn-accion").disabled = true;
+      document.getElementById("preg-bonus").hidden = !p.bonus;
+      document.getElementById("preg-texto").textContent = p.pregunta;
+      document.getElementById("preg-res").textContent = "";
+      document.getElementById("btn-preg-ok").hidden = true;
+      const host = document.getElementById("preg-ops");
+      host.innerHTML = p.opciones.map((op, i) =>
+        `<button type="button" data-i="${i}">${op}</button>`).join("");
+      host.querySelectorAll("button").forEach((b) => {
+        b.onclick = () => {
+          const ok = Number(b.dataset.i) === p.correcta;
+          const pts = p.bonus ? 200 : 100;
+          if (ok) G.ingleses = Math.max(0, G.ingleses - pts);
+          else G.patriotas = Math.max(0, G.patriotas - pts);
+          document.getElementById("preg-res").textContent = ok
+            ? `✓ Correcto (−${pts} ingleses)`
+            : `✗ Incorrecto (−${pts} patriotas)`;
+          host.innerHTML = "";
+          log(ok ? `✓ −${pts} ingleses` : `✗ −${pts} patriotas`);
+          document.getElementById("btn-preg-ok").hidden = false;
+          document.getElementById("btn-preg-ok").onclick = () => {
+            document.getElementById("ov-preg").classList.remove("show");
+            pintarBarras();
+            playCombateAnim(ok);
+          };
+        };
+      });
+      document.getElementById("ov-preg").classList.add("show");
+    }
+
+    document.getElementById("m-dados").onclick = () => {
+      G.modo = "dados";
+      document.getElementById("m-dados").classList.add("on");
+      document.getElementById("m-preg").classList.remove("on");
+      document.getElementById("tipos").hidden = false;
+      document.getElementById("btn-accion").textContent = "Tirar dado";
+    };
+    document.getElementById("m-preg").onclick = () => {
+      G.modo = "preguntas";
+      document.getElementById("m-preg").classList.add("on");
+      document.getElementById("m-dados").classList.remove("on");
+      document.getElementById("tipos").hidden = true;
+      document.getElementById("btn-accion").textContent = "Responder pregunta";
+    };
+    document.getElementById("btn-accion").onclick = () => {
+      if (G.modo === "preguntas") abrirPregunta();
+      else tirarDado();
+    };
+
+    pintarBarras();
+    log("Listo. Tirà un dado o respondé: vas a ver la secuencia animada (no una imagen fija).");
+    fetch("preguntas.json")
+      .then((r) => r.json())
+      .then((d) => { PREGUNTAS = d; log(d.length + " preguntas (banco v1.11)."); })
+      .catch(() => log("No se cargó preguntas.json"));
+  </script>
+</body>
+</html>

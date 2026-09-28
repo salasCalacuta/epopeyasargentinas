@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Términos y condiciones — Epopeyas Argentinas</title>
+  <style>
+    body { font-family: Georgia, "Times New Roman", serif; max-width: 720px; margin: 24px auto; padding: 0 16px 48px; line-height: 1.55; color: #2a1a0c; background: #f7efe0; }
+    h1 { color: #5a2d0c; font-size: 1.35rem; }
+    a { color: #6b3a12; font-weight: 700; }
+    .meta { color: #5a4330; font-size: .92rem; margin-bottom: 1rem; }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: .95rem;
+      margin: 0;
+      background: #fff8e8;
+      border: 1px solid #c9b896;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .nav-legal { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 12px 0 18px; }
+  </style>
+</head>
+<body>
+  <h1>Términos y condiciones</h1>
+  <p class="meta">Documento de UDW Desarrollos aplicable a Epopeyas Argentinas. Contacto:
+    <a href="mailto:udw.desarrollos@gmail.com">udw.desarrollos@gmail.com</a></p>
+  <nav class="nav-legal">
+    <a href="privacidad.html">Política de privacidad</a>
+    <a href="condiciones.html">Condiciones / licencias de uso</a>
+    <a href="index.html">Volver al juego</a>
+  </nav>
+  <pre id="legal-body">Cargando…</pre>
+  <script>
+    fetch("legal/terminos-condiciones.txt")
+      .then((r) => { if (!r.ok) throw new Error("no"); return r.text(); })
+      .then((t) => { document.getElementById("legal-body").textContent = t; })
+      .catch(() => {
+        document.getElementById("legal-body").textContent =
+          "No se pudo cargar el documento. Escribí a udw.desarrollos@gmail.com.";
+      });
+  </script>
+</body>
+</html>

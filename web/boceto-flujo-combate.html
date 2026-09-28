@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Boceto · Choque → dados/pregunta → resultado</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@600;800&display=swap");
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Nunito, system-ui, sans-serif; background: #140e0a; color: #2a1c12; }
+    .app { max-width: 520px; margin: 0 auto; min-height: 100vh; background: #c9a66b; }
+    header { background: #1a120c; color: #fff8e8; text-align: center; padding: 12px 14px; }
+    header h1 { font-family: Cinzel, serif; margin: 0; font-size: 1.05rem; }
+    header p { margin: 4px 0 0; font-size: .72rem; opacity: .85; }
+    .warn {
+      background: #fff3cd; border-bottom: 2px solid #d4a017;
+      padding: 8px 12px; font-size: .74rem; font-weight: 800; text-align: center;
+    }
+    .modo { display: flex; gap: 6px; padding: 8px 10px; background: #e8d5a8; }
+    .modo button {
+      flex: 1; border: 2px solid #5c3a1e; background: #fff8e8; border-radius: 8px;
+      padding: 8px; font-weight: 800; font-family: inherit; cursor: pointer; font-size: .78rem;
+    }
+    .modo button.on { background: linear-gradient(#ffe9a8, #e0b84a); }
+
+    .stage {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      border-top: 3px solid #5c3a1e;
+      border-bottom: 3px solid #5c3a1e;
+      background: #000;
+    }
+    .frame {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity .28s ease;
+    }
+    .frame.on { opacity: 1; animation: ken 1s ease-out forwards; }
+    .caption {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+      background: linear-gradient(transparent, rgba(0,0,0,.85));
+      color: #fff8e8; padding: 26px 12px 10px; font-size: .82rem; font-weight: 800;
+    }
+    .flash {
+      position: absolute; inset: 0; z-index: 5; pointer-events: none; background: #fff; opacity: 0;
+    }
+    .flash.on { animation: flash .3s ease; }
+    .badge-fase {
+      position: absolute; top: 10px; left: 10px; z-index: 6;
+      background: rgba(0,0,0,.6); color: #ffe9a8; border: 1px solid #d4a017;
+      border-radius: 6px; padding: 4px 8px; font-size: .65rem; font-weight: 900;
+    }
+
+    /* Dados en los márgenes laterales inferiores (no tapan el centro) */
+    .dados-over {
+      position: absolute; left: 0; right: 0; bottom: 48px; top: auto; z-index: 7;
+      display: none; align-items: flex-end; justify-content: space-between;
+      gap: 8px; padding: 0 8px;
+      background: transparent;
+      pointer-events: none;
+    }
+    .dados-over.show { display: flex; }
+    .dado-wrap {
+      text-align: center; color: #fff8e8; font-weight: 800;
+      background: rgba(20,12,8,.72);
+      border: 2px solid #d4a017;
+      border-radius: 10px;
+      padding: 6px 8px 8px;
+      pointer-events: auto;
+    }
+    .dado-wrap small { display: block; margin-bottom: 4px; font-size: .68rem; text-shadow: none; }
+    .dado {
+      width: 64px; height: 64px; background: #fff; border: 3px solid #5c3a1e;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 2px;
+      padding: 7px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.45);
+    }
+    .dado.spin { animation: spin .4s linear infinite; }
+    .dado .pip {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: transparent; justify-self: center; align-self: center;
+    }
+    .dado .pip.on { background: #1a120c; }
+    .dado.dado-empty .pip { background: #ddd; opacity: .35; }
+
+    /* Pregunta en panel inferior, deja ver parte del fondo */
+    .preg-over {
+      position: absolute; left: 8px; right: 8px; top: auto; bottom: 48px; max-height: 58%;
+      z-index: 7;
+      display: none; flex-direction: column;
+      background: rgba(243,230,200,.94); border: 3px solid #5c3a1e; border-radius: 12px;
+      padding: 10px; overflow: auto;
+    }
+    .preg-over.show { display: flex; }
+    .preg-over h2 { font-size: .88rem; margin: 0 0 8px; line-height: 1.3; text-align: center; }
+    .preg-ops { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .preg-ops button {
+      border: 2px solid #5c3a1e; background: #fff8e8; border-radius: 8px; padding: 8px;
+      font-family: inherit; font-weight: 700; font-size: .75rem; cursor: pointer; text-align: left;
+    }
+    .preg-bonus { text-align: center; color: #8b6914; font-weight: 900; font-size: .75rem; margin-bottom: 4px; }
+
+    .barras {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      padding: 10px; background: #f3e6c8;
+    }
+    .bar-box { background: #fff8e8; border: 2px solid #5c3a1e; border-radius: 8px; padding: 6px 8px; }
+    .bar-box strong { display: block; font-size: .95rem; }
+    .bar-box small { color: #5a4330; font-size: .72rem; }
+    .fill { height: 8px; border-radius: 4px; margin-top: 4px; background: #ddd; overflow: hidden; }
+    .fill i { display: block; height: 100%; transition: width .4s; }
+    .fill.pat i { background: #2f6b3a; }
+    .fill.ing i { background: #9b2d2d; }
+
+    .panel { padding: 10px; background: #e8d5a8; }
+    .hint { font-size: .8rem; margin: 0 0 8px; font-weight: 700; line-height: 1.35; }
+    .row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .row label {
+      background: #fff8e8; border: 2px solid #5c3a1e; border-radius: 8px;
+      padding: 6px 8px; font-size: .75rem; font-weight: 800;
+    }
+    .primary {
+      width: 100%; border: 3px solid #5c3a1e; background: linear-gradient(#ffe9a8, #e0b84a);
+      border-radius: 10px; padding: 12px; font-weight: 900; font-family: inherit;
+      font-size: .95rem; cursor: pointer;
+    }
+    .primary:disabled { opacity: .5; cursor: not-allowed; }
+    .log {
+      margin-top: 8px; background: #fff8e8; border: 2px dashed #d4a017; border-radius: 8px;
+      padding: 8px; font-size: .72rem; max-height: 88px; overflow: auto;
+    }
+    .pasos {
+      padding: 10px 12px 16px; background: #1a120c; color: #f3e6c8; font-size: .78rem; line-height: 1.4;
+    }
+    .pasos ol { margin: 6px 0 0; padding-left: 18px; }
+    .pasos strong { color: #ffe9a8; }
+
+    @keyframes ken {
+      from { transform: scale(1.07); }
+      to { transform: scale(1); }
+    }
+    @keyframes flash {
+      0% { opacity: 0; }
+      35% { opacity: .5; }
+      100% { opacity: 0; }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Boceto · Flujo: choque → dados → resultado</h1>
+      <p>v1.11 intacta · solo prueba visual</p>
+    </header>
+    <div class="warn">⚠️ Boceto aparte. No modifica el juego real.</div>
+
+    <div class="modo">
+      <button type="button" id="m-dados" class="on">Dados</button>
+      <button type="button" id="m-preg">Preguntas</button>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="frame on" id="frame" style="background-image:url('assets/anim-marcha-pat.jpg')"></div>
+      <div class="flash" id="flash"></div>
+      <div class="badge-fase" id="fase">En marcha</div>
+      <div class="dados-over" id="dados-over">
+        <div class="dado-wrap"><small>🇦🇷 Patriotas</small><div class="dado dado-empty spin" id="d-pat"></div></div>
+        <div class="dado-wrap"><small>🇬🇧 Ingleses</small><div class="dado dado-empty spin" id="d-ing"></div></div>
+      </div>
+      <div class="preg-over" id="preg-over">
+        <div class="preg-bonus" id="preg-bonus" hidden>★ Bonus (±200)</div>
+        <h2 id="preg-texto"></h2>
+        <div class="preg-ops" id="preg-ops"></div>
+      </div>
+      <div class="caption" id="caption">Marcha patriota · tocá el botón para combatir</div>
+    </div>
+
+    <div class="barras">
+      <div class="bar-box">
+        <strong id="n-pat">1600</strong>
+        <small>Patriotas · Día <span id="dia">1</span></small>
+        <div class="fill pat"><i id="bar-pat" style="width:100%"></i></div>
+      </div>
+      <div class="bar-box">
+        <strong id="n-ing">850</strong>
+        <small>Ingleses · Retiro</small>
+        <div class="fill ing"><i id="bar-ing" style="width:100%"></i></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="hint" id="hint">Dados: primero se ve el <strong>choque</strong>, encima giran los dados, luego el ataque y al final quién queda herido.</p>
+      <div class="row" id="tipos">
+        <label><input type="radio" name="tipo" value="soldados" checked /> Soldados</label>
+        <label><input type="radio" name="tipo" value="caballos" /> Caballos</label>
+        <label><input type="radio" name="tipo" value="canones" /> Cañones</label>
+      </div>
+      <button class="primary" type="button" id="btn-accion">Tirar dado</button>
+      <div class="log" id="log"></div>
+    </div>
+
+    <div class="pasos">
+      <strong>Secuencia (3 s c/u)</strong>
+      <ol>
+        <li>Las líneas chocan</li>
+        <li>Ataque en curso (soldados / caballos / cañones)</li>
+        <li>Resultado de los dados (en el margen)</li>
+        <li>Inglés / patriota herido</li>
+        <li><strong>La marcha continúa</strong> (fija hasta el próximo combate)</li>
+      </ol>
+      <p style="margin:8px 0 0">Preguntas: ya están en español (archivo local <code>preguntas.json</code>). Si las editás en Drive, <strong>no</strong> se actualizan solas: hay que volver a copiar el archivo o publicar la hoja y enlazarla.</p>
+    </div>
+  </div>
+
+  <script>
+    const MAX_P = 1600, MAX_E = 850;
+    const IMG = {
+      marcha: "assets/anim-marcha-pat.jpg",
+      choque: "assets/anim-ataque-2.jpg",
+      ataque: "assets/anim-ataque-1.jpg",
+      ataqueCab: "assets/anim-ataque-caballos.jpg",
+      ataqueCan: "assets/anim-ataque-canones.jpg",
+      win: "assets/anim-ingles-herido.jpg",
+      winCab: "assets/anim-ingles-herido-caballo.jpg",
+      winCan: "assets/anim-ingles-herido-canon.jpg",
+      lose: "assets/anim-patriota-herido.jpg",
+    };
+
+    function imgsPorTipo(t) {
+      if (t === "caballos") return { ataque: IMG.ataqueCab, win: IMG.winCab, lose: IMG.lose, choque: IMG.ataqueCab };
+      if (t === "canones") return { ataque: IMG.ataqueCan, win: IMG.winCan, lose: IMG.lose, choque: IMG.ataqueCan };
+      return { ataque: IMG.ataque, win: IMG.win, lose: IMG.lose, choque: IMG.choque };
+    }
+
+    const PAUSA = 3000; // 3 s entre pasos
+    const PIPS = { 0: [], 1: [5], 2: [1, 9], 3: [1, 5, 9], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 3, 4, 6, 7, 9] };
+
+    let G = { modo: "dados", dia: 1, patriotas: 1600, ingleses: 850, caballos: 12, canones: 0 };
+    let PREGUNTAS = [], pool = [], busy = false;
+
+    const logEl = document.getElementById("log");
+    function log(m) { logEl.innerHTML = `<div>${m}</div>` + logEl.innerHTML; }
+    function d6() { return 1 + Math.floor(Math.random() * 6); }
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+    function tipo() {
+      const el = document.querySelector('input[name="tipo"]:checked');
+      return el ? el.value : "soldados";
+    }
+
+    function pintarDado(el, n, spinning) {
+      const on = PIPS[n] || [];
+      const pips = Array.from({ length: 9 }, (_, i) =>
+        `<span class="pip${on.includes(i + 1) ? " on" : ""}"></span>`
+      ).join("");
+      el.className = "dado" + (n ? "" : " dado-empty") + (spinning ? " spin" : "");
+      el.innerHTML = pips;
+    }
+
+    function pintarBarras() {
+      document.getElementById("n-pat").textContent = G.patriotas;
+      document.getElementById("n-ing").textContent = G.ingleses;
+      document.getElementById("dia").textContent = G.dia;
+      document.getElementById("bar-pat").style.width = Math.max(4, (G.patriotas / MAX_P) * 100) + "%";
+      document.getElementById("bar-ing").style.width = Math.max(4, (G.ingleses / MAX_E) * 100) + "%";
+    }
+
+    function setFase(t) { document.getElementById("fase").textContent = t; }
+
+    function showFrame(src, caption) {
+      const stage = document.getElementById("stage");
+      const old = document.getElementById("frame");
+      const next = document.createElement("div");
+      next.className = "frame on";
+      next.id = "frame";
+      next.style.backgroundImage = `url('${src}')`;
+      stage.insertBefore(next, old);
+      old.classList.remove("on");
+      setTimeout(() => old.remove(), 300);
+      document.getElementById("caption").textContent = caption;
+    }
+
+    function flash() {
+      const f = document.getElementById("flash");
+      f.classList.remove("on");
+      void f.offsetWidth;
+      f.classList.add("on");
+    }
+
+    function resolverBajas(dp, de, t) {
+      const diff = Math.abs(dp - de);
+      let bajaP = 0, bajaE = 0;
+      if (dp > de) {
+        bajaE = diff * 100;
+        if (t === "caballos") bajaE *= 2;
+        if (t === "canones") bajaE *= 3;
+      } else if (de > dp) {
+        bajaP = diff * 100;
+        if (t === "caballos") G.caballos = Math.max(0, G.caballos - diff);
+        if (t === "canones") G.canones = Math.max(0, G.canones - diff);
+      }
+      G.patriotas = Math.max(0, G.patriotas - bajaP);
+      G.ingleses = Math.max(0, G.ingleses - bajaE);
+      return { bajaP, bajaE };
+    }
+
+    async function irAMarchaFija() {
+      document.getElementById("dados-over").classList.remove("show");
+      document.getElementById("preg-over").classList.remove("show");
+
+      if (G.ingleses <= 0 || G.ingleses / MAX_E <= 0.1) {
+        setFase("Victoria");
+        showFrame(IMG.marcha, "¡Victoria en Retiro! (simulado)");
+        document.getElementById("btn-accion").disabled = true;
+        busy = false;
+        return;
+      }
+      if (G.patriotas <= 0 || G.patriotas / MAX_P <= 0.1) {
+        setFase("Derrota");
+        showFrame(IMG.marcha, "Derrota simulada");
+        document.getElementById("btn-accion").disabled = true;
+        busy = false;
+        return;
+      }
+
+      G.dia += 1;
+      setFase("En marcha");
+      showFrame(IMG.marcha, "La marcha continúa · esperando el próximo combate · Día " + G.dia);
+      document.getElementById("btn-accion").disabled = false;
+      busy = false;
+    }
+
+    async function flujoDados() {
+      if (busy) return;
+      const t = tipo();
+      if (t === "caballos" && G.caballos < 6) { log("Mín. 6 caballos."); return; }
+      if (t === "canones" && G.canones < 6) { log("Mín. 6 cañones."); return; }
+
+      busy = true;
+      document.getElementById("btn-accion").disabled = true;
+      const ov = document.getElementById("dados-over");
+      const dpEl = document.getElementById("d-pat");
+      const deEl = document.getElementById("d-ing");
+      const imgs = imgsPorTipo(t);
+      const etiqueta = t === "caballos" ? "caballería" : t === "canones" ? "cañones" : "infantería";
+
+      // 1) Las líneas chocan — 3 s (dados en el margen)
+      setFase("¡Choque!");
+      showFrame(imgs.choque, `Las líneas chocan… (${etiqueta})`);
+      pintarDado(dpEl, 0, true);
+      pintarDado(deEl, 0, true);
+      ov.classList.add("show");
+      await sleep(PAUSA);
+
+      // Tirada
+      const dp = d6(), de = d6();
+      const { bajaP, bajaE } = resolverBajas(dp, de, t);
+      const gano = dp >= de;
+      const detalle = `🇦🇷 (−${bajaP}) · 🇬🇧 (−${bajaE})`;
+
+      // 2) Ataque en curso — 3 s (imagen según tipo)
+      ov.classList.remove("show");
+      setFase(t === "caballos" ? "Ataque a caballo" : t === "canones" ? "Ataque con cañones" : "Ataque");
+      flash();
+      showFrame(imgs.ataque, `¡Ataque en curso! (${etiqueta})`);
+      await sleep(PAUSA);
+
+      // 3) Resultado dados — 3 s (dados en el margen)
+      setFase("Resultado dados");
+      showFrame(imgs.choque, "Resultado de los dados");
+      pintarDado(dpEl, dp, false);
+      pintarDado(deEl, de, false);
+      ov.classList.add("show");
+      log(`Dados: patriotas ${dp} · ingleses ${de} · ${detalle} · ${etiqueta}`);
+      await sleep(PAUSA);
+
+      // 4) Herido — 3 s
+      ov.classList.remove("show");
+      setFase(gano ? "Inglés herido" : "Patriota herido");
+      flash();
+      if (gano) {
+        showFrame(imgs.win, "Inglés herido · " + detalle);
+        log("Inglés herido.");
+      } else {
+        showFrame(imgs.lose, "Patriota herido · " + detalle);
+        log("Patriota herido.");
+      }
+      pintarBarras();
+      await sleep(PAUSA);
+
+      // 5) Marcha continua — fijo hasta el próximo combate
+      await irAMarchaFija();
+    }
+
+    function nextQ() {
+      if (!PREGUNTAS.length) return null;
+      if (!pool.length) pool = PREGUNTAS.map((_, i) => i).sort(() => Math.random() - 0.5);
+      return PREGUNTAS[pool.pop()];
+    }
+
+    async function flujoPregunta() {
+      if (busy) return;
+      const p = nextQ();
+      if (!p) { log("Sin preguntas."); return; }
+
+      busy = true;
+      document.getElementById("btn-accion").disabled = true;
+
+      // 1) Las líneas chocan — 3 s, después preguntar
+      setFase("¡Choque!");
+      showFrame(IMG.choque, "Las líneas chocan…");
+      await sleep(PAUSA);
+
+      document.getElementById("preg-bonus").hidden = !p.bonus;
+      document.getElementById("preg-texto").textContent = p.pregunta;
+      const host = document.getElementById("preg-ops");
+      host.innerHTML = p.opciones.map((op, i) =>
+        `<button type="button" data-i="${i}">${op}</button>`).join("");
+      document.getElementById("preg-over").classList.add("show");
+      setFase("Pregunta");
+      document.getElementById("caption").textContent = "Respondé la pregunta";
+
+      const elegida = await new Promise((resolve) => {
+        host.querySelectorAll("button").forEach((b) => {
+          b.onclick = () => resolve(Number(b.dataset.i));
+        });
+      });
+
+      const ok = elegida === p.correcta;
+      const pts = p.bonus ? 200 : 100;
+      if (ok) G.ingleses = Math.max(0, G.ingleses - pts);
+      else G.patriotas = Math.max(0, G.patriotas - pts);
+      const detalle = ok ? `✓ −${pts} ingleses` : `✗ −${pts} patriotas`;
+      document.getElementById("preg-over").classList.remove("show");
+
+      // 2) Ataque en curso — 3 s
+      setFase("Ataque");
+      flash();
+      showFrame(IMG.ataque, "¡Ataque en curso!");
+      await sleep(PAUSA);
+
+      // 3) Resultado — 3 s
+      setFase("Resultado");
+      showFrame(IMG.choque, "Resultado: " + detalle);
+      log(detalle);
+      await sleep(PAUSA);
+
+      // 4) Herido — 3 s
+      setFase(ok ? "Inglés herido" : "Patriota herido");
+      flash();
+      if (ok) showFrame(IMG.win, "Inglés herido · " + detalle);
+      else showFrame(IMG.lose, "Patriota herido · " + detalle);
+      pintarBarras();
+      await sleep(PAUSA);
+
+      // 5) Marcha fija
+      await irAMarchaFija();
+    }
+
+    document.getElementById("m-dados").onclick = () => {
+      if (busy) return;
+      G.modo = "dados";
+      document.getElementById("m-dados").classList.add("on");
+      document.getElementById("m-preg").classList.remove("on");
+      document.getElementById("tipos").hidden = false;
+      document.getElementById("btn-accion").textContent = "Tirar dado";
+      document.getElementById("hint").innerHTML = "Secuencia: choque 3s → ataque 3s → resultado dados 3s → herido 3s → marcha fija.";
+    };
+    document.getElementById("m-preg").onclick = () => {
+      if (busy) return;
+      G.modo = "preguntas";
+      document.getElementById("m-preg").classList.add("on");
+      document.getElementById("m-dados").classList.remove("on");
+      document.getElementById("tipos").hidden = true;
+      document.getElementById("btn-accion").textContent = "Responder pregunta";
+      document.getElementById("hint").innerHTML = "Secuencia: choque 3s → pregunta → ataque 3s → resultado 3s → herido 3s → marcha fija.";
+    };
+    document.getElementById("btn-accion").onclick = () => {
+      if (G.modo === "preguntas") flujoPregunta();
+      else flujoDados();
+    };
+
+    pintarBarras();
+    log("Secuencia: choque → ataque → resultado → herido (3s c/u) → marcha fija.");
+    fetch("preguntas.json")
+      .then((r) => r.json())
+      .then((d) => { PREGUNTAS = d; log(d.length + " preguntas cargadas."); })
+      .catch(() => log("No se cargó preguntas.json"));
+  </script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Boceto simulación · Marcha + combate v1.11</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@600;800&display=swap");
+    :root {
+      --wood: #5c3a1e;
+      --sand: #f3e6c8;
+      --pat: #2f6b3a;
+      --ing: #9b2d2d;
+      --gold: #d4a017;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Nunito, system-ui, sans-serif;
+      background: #1a120c;
+      color: #2a1c12;
+    }
+    .app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: #c9a66b; }
+    header {
+      background: #2a1c12;
+      color: #fff8e8;
+      padding: 10px 14px;
+      text-align: center;
+    }
+    header h1 { font-family: Cinzel, serif; margin: 0; font-size: 1.05rem; }
+    header p { margin: 4px 0 0; font-size: .72rem; opacity: .85; }
+    .warn {
+      background: #fff3cd;
+      border-bottom: 2px solid var(--gold);
+      padding: 8px 12px;
+      font-size: .75rem;
+      font-weight: 800;
+      text-align: center;
+    }
+    .modo {
+      display: flex;
+      gap: 6px;
+      padding: 8px 10px;
+      background: #e8d5a8;
+    }
+    .modo button {
+      flex: 1;
+      border: 2px solid var(--wood);
+      background: #fff8e8;
+      border-radius: 8px;
+      padding: 8px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      font-size: .78rem;
+    }
+    .modo button.on { background: linear-gradient(#ffe9a8, #e0b84a); }
+    .campo {
+      position: relative;
+      height: 260px;
+      overflow: hidden;
+      border-top: 3px solid var(--wood);
+      border-bottom: 3px solid var(--wood);
+      background: #000 center/cover no-repeat;
+    }
+    .campo::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(transparent 55%, rgba(0,0,0,.35));
+      pointer-events: none;
+    }
+    .suelo {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 42%;
+      background: linear-gradient(transparent, rgba(60,40,20,.35));
+      z-index: 1;
+    }
+    .columna {
+      position: absolute;
+      bottom: 28px;
+      display: flex;
+      gap: 4px;
+      align-items: flex-end;
+      z-index: 2;
+      transition: left .9s ease, transform .4s ease;
+    }
+    .columna.pat { left: 8%; }
+    .columna.ing { right: 8%; left: auto; flex-direction: row-reverse; }
+    .columna.avanzando.pat { left: 28%; }
+    .columna.avanzando.ing { right: 28%; }
+    .columna.retrocede.pat { left: 2%; transform: translateX(-6px); }
+    .columna.retrocede.ing { right: 2%; }
+    .columna.choque.pat { left: 36%; }
+    .columna.choque.ing { right: 36%; }
+
+    /* Soldado con piernas que marchan */
+    .sold {
+      position: relative;
+      width: 28px;
+      height: 46px;
+      animation: bob .5s ease-in-out infinite;
+    }
+    .sold:nth-child(2n) { animation-delay: .12s; }
+    .sold:nth-child(3n) { animation-delay: .24s; height: 42px; }
+    .sold .cuerpo {
+      position: absolute;
+      left: 6px; top: 4px;
+      width: 16px; height: 22px;
+      border-radius: 4px 4px 2px 2px;
+      border: 1.5px solid #1a120c;
+    }
+    .sold.pat .cuerpo { background: linear-gradient(#5db86a, #2f6b3a); }
+    .sold.ing .cuerpo { background: linear-gradient(#e07070, #9b2d2d); }
+    .sold .cabeza {
+      position: absolute;
+      left: 8px; top: 0;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #e8c4a0;
+      border: 1.5px solid #1a120c;
+      z-index: 1;
+    }
+    .sold .arma {
+      position: absolute;
+      top: 10px;
+      width: 3px; height: 26px;
+      background: #3d2914;
+      border-radius: 2px;
+    }
+    .sold.pat .arma { right: 2px; }
+    .sold.ing .arma { left: 2px; }
+    .sold .pierna {
+      position: absolute;
+      bottom: 0;
+      width: 5px; height: 14px;
+      background: #3d2914;
+      border-radius: 2px;
+      transform-origin: top center;
+    }
+    .sold .pierna.i { left: 8px; animation: stepL .5s ease-in-out infinite; }
+    .sold .pierna.d { left: 15px; animation: stepR .5s ease-in-out infinite; }
+    .sold.parado .pierna { animation: none !important; }
+    .sold.parado { animation: none; }
+    .sold.herido .cuerpo { filter: brightness(.7); }
+    .sold.cae { animation: caer .6s forwards; }
+
+    .hero-tag {
+      position: absolute;
+      top: -16px; left: 50%;
+      transform: translateX(-50%);
+      font-size: .55rem;
+      font-weight: 900;
+      background: #ffe9a8;
+      border: 1px solid var(--wood);
+      border-radius: 4px;
+      padding: 1px 4px;
+      white-space: nowrap;
+    }
+    .sold.hero { width: 34px; height: 52px; }
+    .sold.hero .cuerpo { width: 20px; height: 26px; left: 7px; background: linear-gradient(#4a7c59, #1e4d2a); }
+    .sold.hero .cabeza { left: 10px; width: 14px; height: 14px; }
+
+    .fx-boom {
+      position: absolute;
+      left: 50%; top: 40%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      z-index: 5;
+      animation: boom .7s ease forwards;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .fx-boom.show { opacity: 1; }
+
+    .barras {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 10px;
+      background: var(--sand);
+    }
+    .bar-box { background: #fff8e8; border: 2px solid var(--wood); border-radius: 8px; padding: 6px 8px; }
+    .bar-box strong { display: block; font-size: .9rem; }
+    .bar-box small { color: #5a4330; }
+    .fill {
+      height: 8px;
+      border-radius: 4px;
+      margin-top: 4px;
+      background: #ddd;
+      overflow: hidden;
+    }
+    .fill i { display: block; height: 100%; transition: width .4s; }
+    .fill.pat i { background: var(--pat); }
+    .fill.ing i { background: var(--ing); }
+
+    .panel { padding: 10px; background: #e8d5a8; }
+    .hint { font-size: .8rem; margin: 0 0 8px; font-weight: 700; }
+    .row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .row label {
+      background: #fff8e8;
+      border: 2px solid var(--wood);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: .75rem;
+      font-weight: 800;
+    }
+    .primary {
+      width: 100%;
+      border: 3px solid var(--wood);
+      background: linear-gradient(#ffe9a8, #e0b84a);
+      border-radius: 10px;
+      padding: 12px;
+      font-weight: 900;
+      font-family: inherit;
+      font-size: .95rem;
+      cursor: pointer;
+    }
+    .log {
+      margin-top: 8px;
+      background: #fff8e8;
+      border: 2px dashed var(--gold);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: .72rem;
+      max-height: 90px;
+      overflow: auto;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,10,6,.82);
+      z-index: 20;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .overlay.show { display: flex; }
+    .modal {
+      background: var(--sand);
+      border: 4px solid var(--wood);
+      border-radius: 12px;
+      padding: 14px;
+      width: min(400px, 100%);
+      text-align: center;
+    }
+    .dados { display: flex; justify-content: space-around; gap: 12px; margin: 12px 0; }
+    .dado {
+      width: 64px; height: 64px;
+      background: #fff;
+      border: 3px solid var(--wood);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+    }
+    .dado.spin { animation: spin .5s linear infinite; }
+    .preg-ops { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+    .preg-ops button {
+      border: 2px solid var(--wood);
+      background: #fff8e8;
+      border-radius: 8px;
+      padding: 8px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: .78rem;
+      cursor: pointer;
+      text-align: left;
+    }
+    .vars {
+      padding: 10px 12px 18px;
+      background: #2a1c12;
+      color: #f3e6c8;
+      font-size: .78rem;
+      line-height: 1.4;
+    }
+    .vars h3 { font-family: Cinzel, serif; color: #ffe9a8; margin: 0 0 6px; font-size: .9rem; }
+    .vars ul { margin: 0; padding-left: 18px; }
+    @keyframes stepL {
+      0%,100% { transform: rotate(25deg); }
+      50% { transform: rotate(-30deg); }
+    }
+    @keyframes stepR {
+      0%,100% { transform: rotate(-30deg); }
+      50% { transform: rotate(25deg); }
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    @keyframes caer {
+      to { transform: translateY(20px) rotate(70deg); opacity: 0; }
+    }
+    @keyframes boom {
+      0% { transform: translate(-50%,-50%) scale(.5); opacity: 0; }
+      40% { opacity: 1; transform: translate(-50%,-50%) scale(1.3); }
+      100% { opacity: 0; transform: translate(-50%,-80%) scale(1); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Boceto · Soldados marchando + combate</h1>
+      <p>Simula reglas de la v1.11 · la v1.11 NO se modifica</p>
+    </header>
+    <div class="warn">⚠️ Archivo aparte (boceto). El juego real sigue en index.html v1.11.</div>
+
+    <div class="modo">
+      <button type="button" id="m-dados" class="on">Jugar con dados</button>
+      <button type="button" id="m-preg">Responder preguntas</button>
+    </div>
+
+    <div class="campo" id="campo" style="background-image:url('assets/boceto-aoe-camino.jpg')">
+      <div class="suelo"></div>
+      <div class="columna pat" id="col-pat"></div>
+      <div class="columna ing" id="col-ing"></div>
+      <div class="fx-boom" id="boom">💥</div>
+    </div>
+
+    <div class="barras">
+      <div class="bar-box">
+        <strong id="n-pat">1600</strong>
+        <small>Patriotas · Día <span id="dia">1</span></small>
+        <div class="fill pat"><i id="bar-pat" style="width:100%"></i></div>
+      </div>
+      <div class="bar-box">
+        <strong id="n-ing">850</strong>
+        <small>Ingleses · Retiro</small>
+        <div class="fill ing"><i id="bar-ing" style="width:100%"></i></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="hint" id="hint">Los soldados verdes marchan hacia la derecha. Los rojos, hacia la izquierda. Al combatir, se acercan y pelean.</p>
+      <div class="row" id="tipos">
+        <label><input type="radio" name="tipo" value="soldados" checked /> Soldados</label>
+        <label><input type="radio" name="tipo" value="caballos" /> Caballos</label>
+        <label><input type="radio" name="tipo" value="canones" /> Cañones</label>
+      </div>
+      <button class="primary" type="button" id="btn-accion">Tirar dado</button>
+      <div class="log" id="log"></div>
+    </div>
+
+    <div class="vars">
+      <h3>Otras variables posibles (para elegir después)</h3>
+      <ul>
+        <li><strong>A:</strong> Marcha entre batallas (este boceto) + combate igual a v1.11</li>
+        <li><strong>B:</strong> Tras cada ronda, la columna avanza o retrocede según el resultado</li>
+        <li><strong>C:</strong> Escenarios distintos (barro / tormenta / calles / fuerte) al cambiar de misión</li>
+        <li><strong>D:</strong> Solo cinemática al ganar/perder fase; combate sigue en pantalla actual</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="overlay" id="ov-dados">
+    <div class="modal">
+      <h2>Combate (dados)</h2>
+      <div class="dados">
+        <div><small>🇦🇷</small><div class="dado spin" id="d-pat">?</div></div>
+        <div><small>🇬🇧</small><div class="dado spin" id="d-ing">?</div></div>
+      </div>
+      <p id="dados-txt"></p>
+      <button class="primary" type="button" id="btn-dados-ok" hidden>Continuar</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="ov-preg">
+    <div class="modal">
+      <p id="preg-bonus" hidden style="color:#8b6914;font-weight:900">★ Bonus (±200)</p>
+      <h2 id="preg-texto" style="font-size:.95rem;line-height:1.3"></h2>
+      <div class="preg-ops" id="preg-ops"></div>
+      <p id="preg-res"></p>
+      <button class="primary" type="button" id="btn-preg-ok" hidden>Continuar</button>
+    </div>
+  </div>
+
+  <script>
+    const UMBRAL = 0.1;
+    const MAX_P = 1600, MAX_E = 850;
+    let G = {
+      modo: "dados",
+      dia: 1,
+      patriotas: 1600,
+      ingleses: 850,
+      caballos: 12,
+      canones: 0,
+      pausado: false,
+    };
+    let PREGUNTAS = [];
+    let pool = [];
+
+    const logEl = document.getElementById("log");
+    function log(m) {
+      logEl.innerHTML = `<div>${m}</div>` + logEl.innerHTML;
+    }
+
+    function d6() { return 1 + Math.floor(Math.random() * 6); }
+
+    function tipo() {
+      const el = document.querySelector('input[name="tipo"]:checked');
+      return el ? el.value : "soldados";
+    }
+
+    function pintarBarras() {
+      document.getElementById("n-pat").textContent = G.patriotas;
+      document.getElementById("n-ing").textContent = G.ingleses;
+      document.getElementById("dia").textContent = G.dia;
+      document.getElementById("bar-pat").style.width = Math.max(4, (G.patriotas / MAX_P) * 100) + "%";
+      document.getElementById("bar-ing").style.width = Math.max(4, (G.ingleses / MAX_E) * 100) + "%";
+    }
+
+    function mkSold(side, hero) {
+      const s = document.createElement("div");
+      s.className = "sold " + side + (hero ? " hero" : "");
+      s.innerHTML = (hero ? '<span class="hero-tag">Liniers</span>' : "") +
+        '<div class="cabeza"></div><div class="cuerpo"></div><div class="arma"></div>' +
+        '<div class="pierna i"></div><div class="pierna d"></div>';
+      return s;
+    }
+
+    function pintarTropas() {
+      const n = (v) => Math.max(3, Math.min(8, Math.round(v / 200)));
+      const cp = document.getElementById("col-pat");
+      const ci = document.getElementById("col-ing");
+      cp.innerHTML = "";
+      ci.innerHTML = "";
+      cp.appendChild(mkSold("pat", true));
+      for (let i = 0; i < n(G.patriotas) - 1; i++) cp.appendChild(mkSold("pat"));
+      for (let i = 0; i < n(G.ingleses); i++) ci.appendChild(mkSold("ing"));
+    }
+
+    function setMarcha(estado) {
+      const cp = document.getElementById("col-pat");
+      const ci = document.getElementById("col-ing");
+      [cp, ci].forEach((el) => el.classList.remove("avanzando", "retrocede", "choque"));
+      if (estado === "idle") {
+        document.querySelectorAll(".sold").forEach((s) => s.classList.remove("parado"));
+      }
+      if (estado === "choque") {
+        cp.classList.add("choque");
+        ci.classList.add("choque");
+      }
+      if (estado === "pat-win") {
+        cp.classList.add("avanzando");
+        ci.classList.add("retrocede");
+      }
+      if (estado === "ing-win") {
+        ci.classList.add("avanzando");
+        cp.classList.add("retrocede");
+      }
+    }
+
+    function boom() {
+      const b = document.getElementById("boom");
+      b.classList.remove("show");
+      void b.offsetWidth;
+      b.classList.add("show");
+    }
+
+    function resolverBajas(dp, de, t) {
+      const diff = Math.abs(dp - de);
+      let bajaP = 0, bajaE = 0;
+      if (dp > de) {
+        bajaE = diff * 100;
+        if (t === "caballos") bajaE *= 2;
+        if (t === "canones") bajaE *= 3;
+      } else if (de > dp) {
+        bajaP = diff * 100;
+        if (t === "caballos") G.caballos = Math.max(0, G.caballos - diff);
+        if (t === "canones") G.canones = Math.max(0, G.canones - diff);
+      }
+      G.patriotas = Math.max(0, G.patriotas - bajaP);
+      G.ingleses = Math.max(0, G.ingleses - bajaE);
+      return { bajaP, bajaE };
+    }
+
+    function pct(b) {
+      const max = b === "p" ? MAX_P : MAX_E;
+      const now = b === "p" ? G.patriotas : G.ingleses;
+      return Math.round((now / max) * 100);
+    }
+
+    function finRonda(patGano) {
+      setMarcha(patGano ? "pat-win" : "ing-win");
+      boom();
+      pintarBarras();
+      pintarTropas();
+      setTimeout(() => {
+        if (pct("e") <= 10 || G.ingleses <= 0) {
+          document.getElementById("campo").style.backgroundImage = "url('assets/boceto-aoe-calles.jpg')";
+          log("¡Victoria en Retiro! (simulado) Los ingleses retroceden a la barricada.");
+          setMarcha("pat-win");
+          document.getElementById("btn-accion").disabled = true;
+          return;
+        }
+        if (pct("p") <= 10 || G.patriotas <= 0) {
+          log("Derrota simulada. En v1.11 entraría Pueyrredón (+300) o retirada.");
+          document.getElementById("btn-accion").disabled = true;
+          return;
+        }
+        G.dia += 1;
+        setMarcha("idle");
+        document.getElementById("btn-accion").disabled = false;
+        pintarBarras();
+      }, 900);
+    }
+
+    function tirarDado() {
+      const t = tipo();
+      if (t === "caballos" && G.caballos < 6) { log("Necesitás al menos 6 caballos."); return; }
+      if (t === "canones" && G.canones < 6) { log("Necesitás al menos 6 cañones."); return; }
+      document.getElementById("btn-accion").disabled = true;
+      setMarcha("choque");
+      const ov = document.getElementById("ov-dados");
+      ov.classList.add("show");
+      const dpEl = document.getElementById("d-pat");
+      const deEl = document.getElementById("d-ing");
+      dpEl.className = "dado spin"; deEl.className = "dado spin";
+      dpEl.textContent = "?"; deEl.textContent = "?";
+      document.getElementById("btn-dados-ok").hidden = true;
+      document.getElementById("dados-txt").textContent = "Tirando…";
+
+      setTimeout(() => {
+        const dp = d6(), de = d6();
+        const { bajaP, bajaE } = resolverBajas(dp, de, t);
+        dpEl.className = "dado"; deEl.className = "dado";
+        dpEl.textContent = dp; deEl.textContent = de;
+        const txt = `🇦🇷 ${dp} (−${bajaP}) · 🇬🇧 ${de} (−${bajaE}) · bajas = diferencia × 100`;
+        document.getElementById("dados-txt").textContent = txt;
+        log(txt);
+        document.getElementById("btn-dados-ok").hidden = false;
+        document.getElementById("btn-dados-ok").onclick = () => {
+          ov.classList.remove("show");
+          finRonda(dp >= de);
+        };
+      }, 700);
+    }
+
+    function siguientePregunta() {
+      if (!PREGUNTAS.length) return null;
+      if (!pool.length) pool = PREGUNTAS.map((_, i) => i).sort(() => Math.random() - 0.5);
+      return PREGUNTAS[pool.pop()];
+    }
+
+    function abrirPregunta() {
+      const p = siguientePregunta();
+      if (!p) { log("Sin preguntas."); return; }
+      document.getElementById("btn-accion").disabled = true;
+      setMarcha("choque");
+      document.getElementById("preg-bonus").hidden = !p.bonus;
+      document.getElementById("preg-texto").textContent = p.pregunta;
+      document.getElementById("preg-res").textContent = "";
+      document.getElementById("btn-preg-ok").hidden = true;
+      const host = document.getElementById("preg-ops");
+      host.innerHTML = p.opciones.map((op, i) =>
+        `<button type="button" data-i="${i}">${op}</button>`).join("");
+      host.querySelectorAll("button").forEach((b) => {
+        b.onclick = () => {
+          const ok = Number(b.dataset.i) === p.correcta;
+          const pts = p.bonus ? 200 : 100;
+          if (ok) G.ingleses = Math.max(0, G.ingleses - pts);
+          else G.patriotas = Math.max(0, G.patriotas - pts);
+          document.getElementById("preg-res").textContent = ok
+            ? `✓ Correcto (−${pts} ingleses)`
+            : `✗ Incorrecto (−${pts} patriotas)`;
+          host.innerHTML = "";
+          log(ok ? `✓ −${pts} ingleses` : `✗ −${pts} patriotas`);
+          document.getElementById("btn-preg-ok").hidden = false;
+          document.getElementById("btn-preg-ok").onclick = () => {
+            document.getElementById("ov-preg").classList.remove("show");
+            finRonda(ok);
+          };
+        };
+      });
+      document.getElementById("ov-preg").classList.add("show");
+    }
+
+    document.getElementById("m-dados").onclick = () => {
+      G.modo = "dados";
+      document.getElementById("m-dados").classList.add("on");
+      document.getElementById("m-preg").classList.remove("on");
+      document.getElementById("tipos").hidden = false;
+      document.getElementById("btn-accion").textContent = "Tirar dado";
+      document.getElementById("hint").textContent = "Soldados marchan. Al tirar el dado se acercan, pelean y avanzan o retroceden según el resultado (reglas v1.11).";
+    };
+    document.getElementById("m-preg").onclick = () => {
+      G.modo = "preguntas";
+      document.getElementById("m-preg").classList.add("on");
+      document.getElementById("m-dados").classList.remove("on");
+      document.getElementById("tipos").hidden = true;
+      document.getElementById("btn-accion").textContent = "Responder pregunta";
+      document.getElementById("hint").textContent = "Misma lógica de preguntas que v1.11. Si acertás, la columna patriota avanza; si fallás, retrocede.";
+    };
+    document.getElementById("btn-accion").onclick = () => {
+      if (G.modo === "preguntas") abrirPregunta();
+      else tirarDado();
+    };
+
+    pintarBarras();
+    pintarTropas();
+    setMarcha("idle");
+    log("Simulación Retiro: 1600 vs 850. Mirá las piernas: están marchando.");
+
+    fetch("preguntas.json")
+      .then((r) => r.json())
+      .then((d) => { PREGUNTAS = d; log(d.length + " preguntas cargadas (mismo banco que v1.11)."); })
+      .catch(() => log("No se pudo cargar preguntas.json"));
+  </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Admin · Epopeyas</title>
+  <style>
+    :root { --bg:#1a120c; --card:#2a1c14; --ink:#fff8e8; --gold:#e8c97a; --muted:#c9b896; --ok:#7dba6a; --bad:#c45c4a; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Georgia, "Times New Roman", serif; background:linear-gradient(160deg,#1a120c,#3a2418); color:var(--ink); min-height:100vh; }
+    .wrap { max-width:980px; margin:0 auto; padding:20px 14px 48px; }
+    h1 { font-size:1.35rem; color:var(--gold); letter-spacing:.04em; }
+    h2 { font-size:1.05rem; margin:1.4rem 0 .6rem; color:var(--gold); }
+    .card { background:var(--card); border:1px solid #5a4330; border-radius:10px; padding:14px; margin-bottom:14px; }
+    input, textarea, button, select { font:inherit; }
+    input, textarea, select { width:100%; padding:8px 10px; border-radius:6px; border:1px solid #6a5040; background:#1c140e; color:var(--ink); margin:4px 0 10px; }
+    button { cursor:pointer; border:0; border-radius:8px; padding:9px 14px; background:#5a4330; color:var(--ink); font-weight:700; }
+    button.primary { background:#8a6a2a; color:#1a120c; }
+    button.danger { background:var(--bad); }
+    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+    .tabs button.active { background:var(--gold); color:#1a120c; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; }
+    th, td { border-bottom:1px solid #4a3428; padding:6px 4px; text-align:left; vertical-align:top; }
+    .muted { color:var(--muted); font-size:.85rem; }
+    .hidden { display:none !important; }
+    .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; }
+    .stat { background:#1c140e; border-radius:8px; padding:10px; }
+    .stat strong { display:block; font-size:1.3rem; color:var(--gold); }
+    .preg { border:1px solid #4a3428; border-radius:8px; padding:10px; margin-bottom:8px; background:#1c140e; }
+    #login-box { max-width:360px; margin:12vh auto; }
+    .msg { margin:8px 0; color:var(--bad); min-height:1.2em; }
+    img.preview, video.preview { max-width:100%; max-height:220px; border-radius:8px; margin-top:8px; }
+    ul.ver { margin:0; padding-left:1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="login-box" class="card">
+      <h1>Acceso administración</h1>
+      <p class="muted">Sesión segura. Las credenciales no viajan en el HTML ni en JS estático.</p>
+      <label>Usuario</label>
+      <input id="user" autocomplete="username" />
+      <label>Clave</label>
+      <input id="pass" type="password" autocomplete="current-password" />
+      <div class="msg" id="login-msg"></div>
+      <button class="primary" id="btn-login" type="button">Entrar</button>
+    </div>
+
+    <div id="panel" class="hidden">
+      <div class="row" style="justify-content:space-between">
+        <h1>Panel UDW · v1.16</h1>
+        <button type="button" id="btn-logout">Salir</button>
+      </div>
+      <div class="tabs">
+        <button type="button" data-tab="sitio" class="active">Sitio</button>
+        <button type="button" data-tab="preguntas">Preguntas</button>
+        <button type="button" data-tab="stats">Estadísticas</button>
+        <button type="button" data-tab="ads">Publicidad</button>
+        <button type="button" data-tab="versiones">Versiones</button>
+      </div>
+
+      <section id="tab-sitio" class="card">
+        <h2>Estado del sitio</h2>
+        <p class="muted">Se actualiza desde el verificador y el servidor. Si el servidor local está caído, abrí primero <code>Arrancar-sitio.bat</code> y entrá a <code>/tefi</code> en localhost.</p>
+        <div class="stat-grid" id="sitio-cards"></div>
+        <p id="sitio-msg" class="muted" style="margin-top:12px"></p>
+        <p id="sitio-nota" class="muted"></p>
+        <div class="row" style="margin-top:10px">
+          <button type="button" id="btn-refresh-sitio">Actualizar estado</button>
+          <a id="sitio-link" class="hidden" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-weight:700">Abrir URL pública</a>
+        </div>
+      </section>
+
+      <section id="tab-preguntas" class="card hidden">
+        <h2>Banco de preguntas</h2>
+        <p class="muted">Edición manual. Al guardar se actualiza <code>preguntas.json</code> y el banco del juego.</p>
+        <div class="row" style="margin-bottom:10px">
+          <label>Filtro
+            <select id="filtro-bonus">
+              <option value="todas">Todas</option>
+              <option value="bonus">Solo bonus</option>
+              <option value="normal">Sin bonus</option>
+            </select>
+          </label>
+          <span class="muted" id="filtro-count"></span>
+        </div>
+        <div id="preg-list"></div>
+        <div class="row">
+          <button type="button" id="btn-add-preg">+ Pregunta</button>
+          <button type="button" class="primary" id="btn-save-preg">Guardar listado</button>
+        </div>
+        <div class="msg" id="preg-msg"></div>
+      </section>
+
+      <section id="tab-stats" class="card hidden">
+        <h2>Usuarios e ingresos</h2>
+        <div class="stat-grid" id="stats-cards"></div>
+        <h2>Frecuencia mensual (días)</h2>
+        <div id="stats-dias" class="muted"></div>
+        <h2>Horarios (0–23 h)</h2>
+        <div id="stats-horas" class="muted"></div>
+        <h2>Alcance de nivel</h2>
+        <div id="stats-niveles" class="muted"></div>
+        <button type="button" id="btn-refresh-stats" style="margin-top:10px">Actualizar</button>
+      </section>
+
+      <section id="tab-ads" class="card hidden">
+        <h2>Publicidad entre niveles</h2>
+        <p class="muted">Una imagen o video activo se muestra al pasar de misión.</p>
+        <input type="file" id="ad-file" accept="image/*,video/mp4,video/webm" />
+        <button type="button" class="primary" id="btn-upload-ad">Cargar y activar</button>
+        <div class="msg" id="ad-msg"></div>
+        <div id="ad-list"></div>
+      </section>
+
+      <section id="tab-versiones" class="card hidden">
+        <h2>Estado de versiones</h2>
+        <div id="ver-list"></div>
+      </section>
+    </div>
+  </div>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let preguntas = [];
+    let filtroBonus = "todas";
+
+    async function api(path, opts = {}) {
+      const r = await fetch(path, {
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
+        ...opts,
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw Object.assign(new Error(data.error || "error"), { status: r.status, data });
+      return data;
+    }
+
+    function showPanel(on) {
+      $("login-box").classList.toggle("hidden", on);
+      $("panel").classList.toggle("hidden", !on);
+    }
+
+    function indicesVisibles() {
+      return preguntas
+        .map((p, i) => ({ p, i }))
+        .filter(({ p }) => {
+          if (filtroBonus === "bonus") return !!p.bonus;
+          if (filtroBonus === "normal") return !p.bonus;
+          return true;
+        });
+    }
+
+    function renderPreguntas() {
+      const host = $("preg-list");
+      const visibles = indicesVisibles();
+      $("filtro-count").textContent = `${visibles.length} de ${preguntas.length}`;
+      host.innerHTML = visibles.map(({ p, i }) => `
+        <div class="preg" data-i="${i}">
+          <label>Pregunta ${p.bonus ? "★ BONUS" : ""}</label>
+          <textarea data-f="pregunta" rows="2">${esc(p.pregunta || "")}</textarea>
+          <label>Opción A</label><input data-f="o0" value="${esc(p.opciones?.[0] || "")}" />
+          <label>Opción B</label><input data-f="o1" value="${esc(p.opciones?.[1] || "")}" />
+          <label>Opción C</label><input data-f="o2" value="${esc(p.opciones?.[2] || "")}" />
+          <div class="row">
+            <label>Correcta
+              <select data-f="correcta">
+                <option value="0" ${p.correcta===0?"selected":""}>A</option>
+                <option value="1" ${p.correcta===1?"selected":""}>B</option>
+                <option value="2" ${p.correcta===2?"selected":""}>C</option>
+              </select>
+            </label>
+            <label><input type="checkbox" data-f="bonus" ${p.bonus?"checked":""}/> Bonus</label>
+            <button type="button" class="danger" data-del="${i}">Eliminar</button>
+          </div>
+        </div>`).join("") || '<p class="muted">Sin preguntas con este filtro.</p>';
+      host.querySelectorAll("[data-del]").forEach((b) => {
+        b.onclick = () => {
+          syncPreguntasDesdeDom();
+          preguntas.splice(+b.dataset.del, 1);
+          renderPreguntas();
+        };
+      });
+    }
+
+    function syncPreguntasDesdeDom() {
+      document.querySelectorAll("#preg-list .preg").forEach((el) => {
+        const i = Number(el.dataset.i);
+        if (!Number.isFinite(i) || !preguntas[i]) return;
+        const g = (f) => el.querySelector(`[data-f="${f}"]`);
+        preguntas[i] = {
+          pregunta: g("pregunta").value.trim(),
+          opciones: [g("o0").value.trim(), g("o1").value.trim(), g("o2").value.trim()].filter(Boolean),
+          correcta: Number(g("correcta").value),
+          bonus: g("bonus").checked,
+        };
+      });
+    }
+
+    function collectPreguntas() {
+      syncPreguntasDesdeDom();
+      return preguntas.slice();
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+    }
+
+    async function loadPreguntas() {
+      const d = await api("/api/admin/preguntas");
+      preguntas = d.preguntas || [];
+      renderPreguntas();
+    }
+
+    async function loadSitio() {
+      const d = await api("/api/admin/estado");
+      const yes = (v) => (v ? "SÍ" : "NO");
+      $("sitio-cards").innerHTML = `
+        <div class="stat"><span>Servidor local</span><strong>${yes(d.servidorLocal)}</strong></div>
+        <div class="stat"><span>Proceso túnel</span><strong>${yes(d.tunelProceso)}</strong></div>
+        <div class="stat"><span>Online</span><strong>${yes(d.online)}</strong></div>
+        <div class="stat"><span>URL fija</span><strong>${yes(d.urlFija)}</strong></div>
+        <div class="stat"><span>Público OK</span><strong>${yes(d.publicoOk)}</strong></div>
+        <div class="stat"><span>Modo túnel</span><strong>${esc(d.tunelModo || "-")}</strong></div>`;
+      $("sitio-msg").textContent = [
+        d.mensaje || "",
+        d.urlPublica ? `URL: ${d.urlPublica}` : "Sin URL pública guardada.",
+        d.actualizado ? `Última actualización estado: ${d.actualizado}` : "",
+        `Versión: ${d.versionJuego || ""}`,
+      ].filter(Boolean).join(" · ");
+      $("sitio-nota").textContent = d.notaUrlFija || "";
+      const a = $("sitio-link");
+      if (d.urlPublica) {
+        a.href = d.urlPublica;
+        a.classList.remove("hidden");
+        a.textContent = "Abrir URL pública";
+      } else {
+        a.classList.add("hidden");
+      }
+    }
+
+    async function loadStats() {
+      const d = await api("/api/admin/stats");
+      $("stats-cards").innerHTML = `
+        <div class="stat"><span>Sesiones totales</span><strong>${d.totalSesiones}</strong></div>
+        <div class="stat"><span>Últimos 30 días</span><strong>${d.sesionesMes}</strong></div>
+        <div class="stat"><span>Tiempo prom. (s)</span><strong>${d.tiempoJuegoSegundosPromedio}</strong></div>
+        <div class="stat"><span>Tiempo total (s)</span><strong>${d.tiempoJuegoSegundosTotal}</strong></div>`;
+      $("stats-dias").textContent = Object.entries(d.frecuenciaMensual || {}).map(([k,v]) => `${k}: ${v}`).join(" · ") || "Sin datos";
+      $("stats-horas").textContent = (d.horarios || []).map((n,h) => `${h}h:${n}`).filter((x)=>!x.endsWith(":0")).join(" · ") || "Sin datos";
+      $("stats-niveles").textContent = Object.entries(d.alcanceNivel || {}).map(([k,v]) => `${k}: ${v}`).join(" · ") || "Sin datos";
+    }
+
+    async function loadAds() {
+      const d = await api("/api/admin/ads");
+      const list = d.entreNiveles || [];
+      $("ad-list").innerHTML = list.map((a) => {
+        const media = a.tipo === "video"
+          ? `<video class="preview" src="/${a.archivo}" controls></video>`
+          : `<img class="preview" src="/${a.archivo}" alt="" />`;
+        return `<div class="preg"><div class="muted">${a.activo ? "ACTIVA" : "inactiva"} · ${a.archivo}</div>${media}
+          <button type="button" class="danger" data-ad-del="${a.id}">Quitar</button></div>`;
+      }).join("") || '<p class="muted">Sin publicidad cargada.</p>';
+      $("ad-list").querySelectorAll("[data-ad-del]").forEach((b) => {
+        b.onclick = async () => {
+          await api("/api/admin/ads", { method: "DELETE", body: JSON.stringify({ id: b.dataset.adDel }) });
+          loadAds();
+        };
+      });
+    }
+
+    async function loadVersiones() {
+      const d = await api("/api/admin/versiones");
+      $("ver-list").innerHTML = (d.versiones || []).map((v) => `
+        <div class="preg"><strong>v${esc(v.version)}</strong> <span class="muted">${esc(v.fecha||"")}</span>
+        <ul class="ver">${(v.cambios||[]).map((c)=>`<li>${esc(c)}</li>`).join("")}</ul></div>`).join("");
+    }
+
+    $("btn-login").onclick = async () => {
+      $("login-msg").textContent = "";
+      try {
+        await api("/api/admin/login", { method: "POST", body: JSON.stringify({ user: $("user").value, pass: $("pass").value }) });
+        $("pass").value = "";
+        showPanel(true);
+        await Promise.all([loadSitio(), loadPreguntas(), loadStats(), loadAds(), loadVersiones()]);
+      } catch (e) {
+        $("login-msg").textContent = e.status === 429 ? "Demasiados intentos. Esperá unos minutos." : "Usuario o clave incorrectos.";
+      }
+    };
+
+    $("btn-logout").onclick = async () => {
+      await api("/api/admin/logout", { method: "POST", body: "{}" });
+      showPanel(false);
+    };
+
+    document.querySelectorAll(".tabs button").forEach((b) => {
+      b.onclick = () => {
+        document.querySelectorAll(".tabs button").forEach((x) => x.classList.remove("active"));
+        b.classList.add("active");
+        ["sitio","preguntas","stats","ads","versiones"].forEach((t) => {
+          $("tab-" + t).classList.toggle("hidden", t !== b.dataset.tab);
+        });
+      };
+    });
+
+    $("btn-refresh-sitio").onclick = () => loadSitio();
+
+    $("btn-add-preg").onclick = () => {
+      syncPreguntasDesdeDom();
+      preguntas.push({ pregunta: "", opciones: ["", "", ""], correcta: 0, bonus: false });
+      filtroBonus = "todas";
+      $("filtro-bonus").value = "todas";
+      renderPreguntas();
+    };
+
+    $("filtro-bonus").onchange = () => {
+      syncPreguntasDesdeDom();
+      filtroBonus = $("filtro-bonus").value;
+      renderPreguntas();
+    };
+
+    $("btn-save-preg").onclick = async () => {
+      preguntas = collectPreguntas();
+      try {
+        const d = await api("/api/admin/preguntas", { method: "PUT", body: JSON.stringify({ preguntas }) });
+        $("preg-msg").style.color = "var(--ok)";
+        $("preg-msg").textContent = `Guardado (${d.total} preguntas).`;
+      } catch {
+        $("preg-msg").style.color = "var(--bad)";
+        $("preg-msg").textContent = "No se pudo guardar.";
+      }
+    };
+
+    $("btn-refresh-stats").onclick = () => loadStats();
+
+    $("btn-upload-ad").onclick = async () => {
+      const f = $("ad-file").files[0];
+      if (!f) { $("ad-msg").textContent = "Elegí un archivo."; return; }
+      const buf = await f.arrayBuffer();
+      const bytes = new Uint8Array(buf);
+      let bin = "";
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+      const b64 = btoa(bin);
+      const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+      try {
+        await api("/api/admin/ads", { method: "POST", body: JSON.stringify({ nombre: f.name.replace(/\.[^.]+$/, ""), ext, data: b64 }) });
+        $("ad-msg").style.color = "var(--ok)";
+        $("ad-msg").textContent = "Publicidad activa.";
+        $("ad-file").value = "";
+        loadAds();
+      } catch {
+        $("ad-msg").style.color = "var(--bad)";
+        $("ad-msg").textContent = "Error al subir.";
+      }
+    };
+
+    api("/api/admin/me").then(async () => {
+      showPanel(true);
+      await Promise.all([loadSitio(), loadPreguntas(), loadStats(), loadAds(), loadVersiones()]);
+    }).catch(() => showPanel(false));
+  </script>
+</body>
+</html>

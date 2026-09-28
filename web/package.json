@@ -1,0 +1,15 @@
+{
+  "name": "epopeyas-argentinas",
+  "version": "1.16.0",
+  "private": true,
+  "description": "Epopeyas Argentinas — juego educativo (PWA) sobre la invasión inglesa de 1806",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "init-admin": "node scripts/init-admin-secrets.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}
