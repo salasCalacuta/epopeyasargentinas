@@ -1,18 +1,21 @@
-# Checklist antes del primer push / Render
+# Checklist deploy v2.0
 
-1. Revisar que no haya secretos:
-   - `web/.agente/` está en `.gitignore`
-   - No commitear `ADMIN_PASS` ni `maletefi…`
-2. En GitHub (repo vacío [epopeyasargentinas](https://github.com/salasCalacuta/epopeyasargentinas)):
-   ```bat
-   git init
-   git remote add origin https://github.com/salasCalacuta/epopeyasargentinas.git
-   git add .
-   git commit -m "Epopeyas Argentinas 1.16 PWA lista para Render"
-   git branch -M main
-   git push -u origin main
-   ```
-   (Todavía **no** ejecutar el push hasta que lo indiques.)
-3. En Render: New → Blueprint → este repo, o Web Service con `rootDir=web`.
-4. Variables: `ADMIN_USER`, `ADMIN_PASS`, `AUTH_ENABLED=0`.
-5. En Android Chrome: abrir la URL HTTPS → Instalar app.
+## Render (Web Service)
+1. New → Blueprint o Web Service desde `salasCalacuta/epopeyasargentinas`
+2. Root Directory: `web`
+3. Build: `npm install --omit=dev`
+4. Start: `node server.js`
+5. Health: `/health`
+6. Variables de entorno (obligatorias para admin):
+   - `AUTH_ENABLED=0`
+   - `ADMIN_USER=UDW`
+   - `ADMIN_PASS=maletefi2017`  (o la clave que elijas; no va en el repo)
+7. Tras el deploy, admin en `https://TU-SERVICIO.onrender.com/tefi`
+
+## Keepalive (cada 2 h)
+- Windows: `web\Instalar-keepalive-render.ps1` (editá antes `keepalive-render-config.json`)
+- GitHub Actions: workflow `Keepalive Render` + secret `RENDER_URL` = URL del servicio
+
+## Renovar preguntas (cada 3 días)
+- Cliente: el juego renueva orden y “preguntas hechas” solo
+- Windows: `web\Instalar-renovar-preguntas.ps1` (reordena `preguntas.json` local)

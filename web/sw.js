@@ -1,5 +1,5 @@
 /* Service worker — Epopeyas Argentinas PWA */
-const CACHE = "epopeyas-v116";
+const CACHE = "epopeyas-v200";
 const PRECACHE = [
   "/",
   "/index.html",

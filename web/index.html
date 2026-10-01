@@ -9,11 +9,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Epopeyas" />
   <meta name="description" content="Epopeyas Argentinas — juego educativo sobre la invasión inglesa de 1806." />
-  <title>Epopeyas Argentinas 1.16</title>
+  <title>Epopeyas Argentinas 2.0</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="styles.css?v=135" />
+  <link rel="stylesheet" href="styles.css?v=200" />
 </head>
 <body>
   <div class="app">
@@ -283,18 +283,16 @@
         <button class="primary wide" id="btn-ads-continuar" type="button">Continuar</button>
       </div>
     </div>
-    <footer class="bottom-nav">
+    <footer class="bottom-nav" aria-label="Navegación y legales">
+      <a class="legal-btn" href="privacidad.html" target="_blank" rel="noopener noreferrer">Políticas</a>
+      <a class="legal-btn" href="condiciones.html" target="_blank" rel="noopener noreferrer">Condiciones</a>
       <button type="button" id="btn-inicio">Inicio</button>
       <button type="button" id="btn-pausa">Pausa</button>
       <button type="button" id="btn-volver">Volver</button>
     </footer>
-    <nav class="legal-nav" aria-label="Documentos legales">
-      <a class="legal-btn" href="privacidad.html" target="_blank" rel="noopener noreferrer">Políticas</a>
-      <a class="legal-btn" href="condiciones.html" target="_blank" rel="noopener noreferrer">Condiciones</a>
-    </nav>
   </div>
-  <script src="preguntas-banco.js?v=135"></script>
-  <script src="game.js?v=135"></script>
+  <script src="preguntas-banco.js?v=200"></script>
+  <script src="game.js?v=200"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {

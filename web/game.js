@@ -30,18 +30,19 @@ const PROCER_BIO = {
   Wiliams: "https://es.wikipedia.org/wiki/Invasiones_inglesas",
 };
 const CARTA_DEFS = {
-  milicia: { titulo: "Milicia" },
-  "milicia-inglesa": { titulo: "Milicia inglesa" },
-  caballos: { titulo: "Caballos" },
-  "caballos-ingleses": { titulo: "Caballos ingleses" },
-  canones: { titulo: "Cañones" },
-  "canones-ingleses": { titulo: "Cañones ingleses" },
-  acierto: { titulo: "Respuesta acertada" },
-  tesoro: { titulo: "Tesoro patriota" },
+  milicia: { titulo: "Milicia", img: "assets/unidad-milicia.png" },
+  "milicia-inglesa": { titulo: "Milicia inglesa", img: "assets/unidad-ingles.png" },
+  caballos: { titulo: "Caballos", img: "assets/carta-caballos.jpg" },
+  "caballos-ingleses": { titulo: "Caballos ingleses", img: "assets/carta-caballos.jpg" },
+  canones: { titulo: "Cañones", img: "assets/carta-canones.jpg" },
+  "canones-ingleses": { titulo: "Cañones ingleses", img: "assets/carta-canones.jpg" },
+  tesoro: { titulo: "Tesoro patriota", img: "assets/carta-tesoro-patriota.jpg" },
 };
 const STORAGE_KEY = "epopeyas_v112";
 const STATS_KEY = "epopeyas_v112_stats";
-const VERSION_JUEGO = "1.16";
+const PREGUNTAS_CICLO_KEY = "epopeyas_preguntas_ciclo_v20";
+const PREGUNTAS_CICLO_MS = 3 * 24 * 60 * 60 * 1000;
+const VERSION_JUEGO = "2.0";
 const TXT_DADOS = "Un dado por bando. Cada punto = 100 soldados. Las bajas es por diferencia de puntaje.";
 
 const TELEMETRY = {
@@ -485,6 +486,8 @@ let STATS = {
   victorias: 0,
   derrotas: 0,
   soldadosPerdidos: 0,
+  caballosObtenidos: 0,
+  canonesObtenidos: 0,
 };
 let dadosToken = 0;
 let preguntaRespondida = false;
@@ -505,10 +508,26 @@ function tituloCarta(raw) {
   return s.replace(/\d+/g, "").replace(/\s+/g, " ").replace(/:\s*$/, "").trim() || s;
 }
 
+function esCartaRespuesta(c) {
+  if (typeof c === "string") {
+    const t = tituloCarta(c).toLowerCase();
+    return c === "acierto" || t.indexOf("respuesta") >= 0;
+  }
+  const id = String(c.id || "");
+  const titulo = String(c.titulo || "").toLowerCase();
+  return id === "acierto" || titulo.indexOf("respuesta") >= 0;
+}
+
+function cartasVisibles() {
+  return (G.cartasObtenidas || []).filter((c) => !esCartaRespuesta(c));
+}
+
 function agregarCarta(id, extra) {
   const key = String(id || "");
+  if (key === "acierto") return;
   const img = (extra && extra.img) || (CARTA_DEFS[key] && CARTA_DEFS[key].img) || "";
   const titulo = (extra && extra.titulo) || tituloCarta(key);
+  if (/respuesta/i.test(titulo)) return;
   const ya = G.cartasObtenidas.some((c) => {
     if (typeof c === "string") return c === key || tituloCarta(c) === titulo;
     return c.id === key || c.titulo === titulo;
@@ -529,6 +548,52 @@ function cargarStats() {
     const data = JSON.parse(raw);
     if (data && typeof data === "object") STATS = Object.assign(STATS, data);
   } catch (e) { /* ignore */ }
+}
+
+function renovarCicloPreguntasSiCorresponde(forzar) {
+  const now = Date.now();
+  let inicio = 0;
+  try {
+    const raw = localStorage.getItem(PREGUNTAS_CICLO_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      inicio = Number(data && data.inicio) || 0;
+    }
+  } catch (e) { /* ignore */ }
+  const vencido = !inicio || forzar || (now - inicio) >= PREGUNTAS_CICLO_MS;
+  if (!vencido) return false;
+  try {
+    localStorage.setItem(PREGUNTAS_CICLO_KEY, JSON.stringify({ inicio: now, version: VERSION_JUEGO }));
+  } catch (e) { /* ignore */ }
+  if (PREGUNTAS.length) G.preguntasPool = shuffle(PREGUNTAS.map((_, i) => i));
+  else G.preguntasPool = [];
+  return true;
+}
+
+function statsTextoMision(m) {
+  if (!m) return "";
+  switch (m.id) {
+    case "retiro":
+      return `P ${G.patriotas} · E ${G.ingleses} · 🐎${G.caballosP} 💣${G.canonesP}`;
+    case "barricada": {
+      const p = (G.colPat[0] || 0) + (G.colPat[1] || 0);
+      const e = (G.colIng[0] || 0) + (G.colIng[1] || 0);
+      return `Columnas P ${p || G.patriotas} · E ${e || G.ingleses}`;
+    }
+    case "fuerte_plaza":
+      return `P ${G.patriotas} · Plaza ${G.ingPlaza || 0} · Oro ${G.oroP}`;
+    case "fuerte_int":
+      return `P ${G.patriotas} · Fuerte ${G.ingFuerte || G.ingleses} · 🐎${G.caballosP} 💣${G.canonesP}`;
+    case "victoria":
+      return `Oro ${G.oroP} · 🐎${G.caballosP} · 💣${G.canonesP}`;
+    default:
+      return `P ${G.patriotas} · E ${G.ingleses}`;
+  }
+}
+
+function htmlMisionItem(m) {
+  const ic = { activa: "▶", completada: "✓", pendiente: "○", fallida: "✗" };
+  return `<li class="mision-item estado-${m.estado}"><span>${ic[m.estado] || "○"}</span> <strong>${m.nombre}</strong><span class="mision-stats">${statsTextoMision(m)}</span><small>${m.desc}</small></li>`;
 }
 
 function registrarPerdidas(n) {
@@ -805,18 +870,22 @@ function actualizarBotonAccion() {
 function pintarMisiones(targetId) {
   const el = document.getElementById(targetId || "mision-list");
   if (!el) return;
-  const ic = { activa: "▶", completada: "✓", pendiente: "○", fallida: "✗" };
-  el.innerHTML = G.misiones.map((m) => `<li class="mision-item estado-${m.estado}"><span>${ic[m.estado] || "○"}</span> <strong>${m.nombre}</strong><small>${m.desc}</small></li>`).join("");
+  el.innerHTML = G.misiones.map((m) => htmlMisionItem(m)).join("");
 }
 
 function pintarCartasObtenidas(targetId) {
   const el = document.getElementById(targetId || "carta-list");
   if (!el) return;
-  if (!G.cartasObtenidas.length) {
+  const cartas = cartasVisibles();
+  if (!cartas.length) {
     el.innerHTML = '<li class="carta-item vacia">Sin cartas aún.</li>';
     return;
   }
-  el.innerHTML = G.cartasObtenidas.map((c) => `<li class="carta-item">${c}</li>`).join("");
+  el.innerHTML = cartas.map((c) => {
+    const v = cartaVista(c);
+    const img = v.img ? `<img src="${escapeHtml(v.img)}" alt="">` : "";
+    return `<li class="carta-item carta-visual">${img}<strong>${escapeHtml(v.titulo)}</strong></li>`;
+  }).join("");
 }
 
 function actualizarUI() {
@@ -1173,6 +1242,12 @@ function aplicarSnapshot(s) {
   Object.keys(s).forEach((k) => {
     if (k !== "historial") G[k] = s[k];
   });
+  if (Array.isArray(G.cartasObtenidas)) {
+    G.cartasObtenidas = G.cartasObtenidas.filter((c) => !esCartaRespuesta(c));
+  }
+  if (renovarCicloPreguntasSiCorresponde(false) && PREGUNTAS.length) {
+    G.preguntasPool = shuffle(PREGUNTAS.map((_, i) => i));
+  }
 }
 
 function persistir() {
@@ -1189,10 +1264,20 @@ function cargarPersistencia() {
   try {
     let raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) raw = localStorage.getItem("epopeyas_v111");
-    if (!raw) return;
+    if (!raw) {
+      renovarCicloPreguntasSiCorresponde(false);
+      return;
+    }
     const data = JSON.parse(raw);
     if (Array.isArray(data.historial)) G.historial = data.historial;
+    if (data.actual && typeof data.actual === "object") {
+      // Limpia cartas de "respuestas" de partidas viejas al retomar vía snapshot.
+      if (Array.isArray(data.actual.cartasObtenidas)) {
+        data.actual.cartasObtenidas = data.actual.cartasObtenidas.filter((c) => !esCartaRespuesta(c));
+      }
+    }
   } catch (e) { /* ignore */ }
+  renovarCicloPreguntasSiCorresponde(false);
 }
 
 function guardarPunto(etiqueta) {
@@ -1459,6 +1544,7 @@ function siguientePregunta() {
     PREGUNTAS = window.BANCO_PREGUNTAS.slice();
   }
   if (!PREGUNTAS.length) return null;
+  renovarCicloPreguntasSiCorresponde(false);
   if (!G.preguntasPool.length) G.preguntasPool = shuffle(PREGUNTAS.map((_, i) => i));
   const idx = G.preguntasPool.pop();
   return PREGUNTAS[idx] || null;
@@ -1588,7 +1674,6 @@ function responderPregunta(elegida) {
       img.classList.add("ok");
       img.classList.remove("fail");
     }
-    agregarCarta("acierto");
     if (p.bonus) {
       const nom = otorgarProcer("p");
       if (nom) procerNom = nom;
@@ -1750,6 +1835,8 @@ function confirmarCompra() {
       log(`Ingleses +${cant} caballos.`);
     } else {
       G.caballosP += cant;
+      STATS.caballosObtenidos = (STATS.caballosObtenidos || 0) + cant;
+      persistirStats();
       agregarCarta("caballos");
       log(`+${cant} caballos.`);
     }
@@ -1761,6 +1848,8 @@ function confirmarCompra() {
       log(`Ingleses +${cant} cañones.`);
     } else {
       G.canonesP += cant;
+      STATS.canonesObtenidos = (STATS.canonesObtenidos || 0) + cant;
+      persistirStats();
       agregarCarta("canones");
       log(`+${cant} cañones.`);
     }
@@ -1771,10 +1860,14 @@ function confirmarCompra() {
 }
 
 function cartaVista(c) {
-  if (typeof c === "string") return { titulo: tituloCarta(c), img: "", bio: "" };
+  if (typeof c === "string") {
+    const def = CARTA_DEFS[c] || {};
+    return { titulo: tituloCarta(c), img: def.img || "", bio: "" };
+  }
   const titulo = c.titulo || tituloCarta(c.id);
+  const def = CARTA_DEFS[c.id] || {};
   const bio = c.bio || PROCER_BIO[titulo] || "";
-  return { titulo, img: c.img || "", bio };
+  return { titulo, img: c.img || def.img || "", bio };
 }
 
 function abrirPanelBatalla(tipo) {
@@ -1782,10 +1875,11 @@ function abrirPanelBatalla(tipo) {
   const list = document.getElementById("panel-bat-list");
   if (tipo === "cartas") {
     titulo.textContent = "Cartas obtenidas";
-    if (!G.cartasObtenidas.length) list.innerHTML = '<li class="carta-item vacia">Sin cartas aún.</li>';
+    const cartas = cartasVisibles();
+    if (!cartas.length) list.innerHTML = '<li class="carta-item vacia">Sin cartas aún.</li>';
     else {
       list.className = "panel-bat-list cartas-grid";
-      list.innerHTML = G.cartasObtenidas.map((c) => {
+      list.innerHTML = cartas.map((c) => {
         const v = cartaVista(c);
         const bio = v.bio
           ? `<a class="carta-bio" href="${escapeHtml(v.bio)}" target="_blank" rel="noopener noreferrer">Biografía oficial</a>`
@@ -1799,8 +1893,7 @@ function abrirPanelBatalla(tipo) {
   } else {
     list.className = "panel-bat-list";
     titulo.textContent = "Misiones";
-    const ic = { activa: "▶", completada: "✓", pendiente: "○", fallida: "✗" };
-    list.innerHTML = G.misiones.map((m) => `<li class="mision-item estado-${m.estado}"><span>${ic[m.estado] || "○"}</span> <strong>${m.nombre}</strong><small>${m.desc}</small></li>`).join("");
+    list.innerHTML = G.misiones.map((m) => htmlMisionItem(m)).join("");
   }
   document.getElementById("ov-panel-bat").classList.add("show");
 }
@@ -1951,6 +2044,10 @@ function pintarStats() {
     ["Misiones ganadas", STATS.misionesGanadas],
     ["Oro por misiones", STATS.oroMisiones],
     ["Oro actual", G.oroP],
+    ["Caballos obtenidos", STATS.caballosObtenidos || 0],
+    ["Cañones obtenidos", STATS.canonesObtenidos || 0],
+    ["Caballos en juego", G.caballosP],
+    ["Cañones en juego", G.canonesP],
     ["Respuestas correctas", STATS.correctas],
     ["Respuestas incorrectas", STATS.incorrectas],
     ["Soldados perdidos", STATS.soldadosPerdidos || 0],
@@ -2057,7 +2154,7 @@ document.addEventListener("click", (e) => {
 
 on("btn-ads-continuar", "click", cerrarPublicidad);
 
-fetch("preguntas.json?v=133", { credentials: "include" })
+fetch("preguntas.json?v=200", { credentials: "include" })
   .then((r) => r.json())
   .then((data) => {
     if (Array.isArray(data) && data.length) {

@@ -97,32 +97,48 @@ function saveSessions() {
   fs.writeFileSync(SESSIONS_PATH, JSON.stringify(obj, null, 2), { mode: 0o600 });
 }
 
-function ensureAdminSecrets() {
-  if (fs.existsSync(SECRETS_PATH)) return;
-  const user = process.env.ADMIN_USER;
-  const pass = process.env.ADMIN_PASS;
-  if (!user || !pass) {
-    if (IS_RENDER) {
-      console.warn("AVISO: faltan ADMIN_USER/ADMIN_PASS. El panel /tefi no podrá autenticar hasta configurarlos.");
-      return;
-    }
-    return;
-  }
+function writeAdminSecrets(user, pass, note) {
   if (!fs.existsSync(AGENTE_DIR)) fs.mkdirSync(AGENTE_DIR, { recursive: true });
   const salt = crypto.randomBytes(16).toString("hex");
   const hash = crypto.scryptSync(pass, salt, 64).toString("hex");
   fs.writeFileSync(
     SECRETS_PATH,
-    JSON.stringify({ user, salt, hash, createdAt: new Date().toISOString(), note: "Generado desde variables de entorno" }, null, 2),
+    JSON.stringify(
+      {
+        user,
+        salt,
+        hash,
+        createdAt: new Date().toISOString(),
+        note: note || "Generado desde variables de entorno",
+      },
+      null,
+      2
+    ),
     { mode: 0o600 }
   );
-  console.log("Admin secrets creados desde entorno (usuario:", user + ")");
+}
+
+function ensureAdminSecrets() {
+  const user = String(process.env.ADMIN_USER || "").trim();
+  const pass = String(process.env.ADMIN_PASS || "");
+  if (user && pass) {
+    // En Render el disco es efímero: recrear desde env si falta el archivo.
+    if (!fs.existsSync(SECRETS_PATH) || IS_RENDER) {
+      writeAdminSecrets(user, pass, "Sincronizado desde ADMIN_USER/ADMIN_PASS");
+      console.log("Admin secrets listos desde entorno (usuario:", user + ")");
+    }
+    return;
+  }
+  if (!fs.existsSync(SECRETS_PATH) && IS_RENDER) {
+    console.warn("AVISO: faltan ADMIN_USER/ADMIN_PASS. El panel /tefi no podrá autenticar hasta configurarlos.");
+  }
 }
 
 function cookieAttrs(req) {
   const xf = String(req.headers["x-forwarded-proto"] || "");
   const secure = xf.split(",")[0].trim() === "https" || process.env.FORCE_SECURE_COOKIE === "1";
-  return `Path=/; HttpOnly; SameSite=Strict${secure ? "; Secure" : ""}`;
+  // Lax: el POST de login en la misma pestaña guarda la cookie de forma fiable detrás de proxy HTTPS.
+  return `Path=/; HttpOnly; SameSite=Lax${secure ? "; Secure" : ""}`;
 }
 
 function loadSecrets() {
@@ -144,10 +160,23 @@ function timingSafeEqualStr(a, b) {
 }
 
 function verifyAdmin(user, pass) {
-  const sec = loadSecrets();
-  if (!timingSafeEqualStr(user, sec.user)) return false;
-  const hash = crypto.scryptSync(pass, sec.salt, 64).toString("hex");
-  return timingSafeEqualStr(hash, sec.hash);
+  const u = String(user || "").trim();
+  const p = String(pass || "");
+  const envUser = String(process.env.ADMIN_USER || "").trim();
+  const envPass = String(process.env.ADMIN_PASS || "");
+  // Prioridad: variables de entorno (Render / reinicios).
+  if (envUser && envPass) {
+    return timingSafeEqualStr(u, envUser) && timingSafeEqualStr(p, envPass);
+  }
+  try {
+    const sec = loadSecrets();
+    if (!timingSafeEqualStr(u, sec.user)) return false;
+    const hash = crypto.scryptSync(p, sec.salt, 64).toString("hex");
+    return timingSafeEqualStr(hash, sec.hash);
+  } catch (e) {
+    console.warn("verifyAdmin:", e.message || e);
+    return false;
+  }
 }
 
 function parseCookies(req) {
@@ -412,9 +441,9 @@ async function handleApi(req, res, urlPath) {
     try {
       const raw = await readBody(req);
       const body = JSON.parse(raw.toString("utf8") || "{}");
-      const user = String(body.user || "");
+      const user = String(body.user || "").trim();
       const pass = String(body.pass || "");
-      if (!verifyAdmin(user, pass)) {
+      if (!user || !pass || !verifyAdmin(user, pass)) {
         await new Promise((r) => setTimeout(r, 400 + Math.random() * 400));
         sendJson(res, 401, { error: "credenciales" });
         return true;

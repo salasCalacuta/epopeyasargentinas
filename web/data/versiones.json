@@ -1,26 +1,40 @@
-[
-  {
-    "version": "1.16",
-    "fecha": "2026-09-28",
-    "cambios": [
-      "PWA instalable en Android (manifest + service worker)",
-      "Preparación para GitHub y Render.com",
-      "Servidor listo para HTTPS/0.0.0.0 y secretos por entorno",
-      "Sin canal APK/AAB"
-    ]
-  },
-  {
-    "version": "1.15",
-    "fecha": "2026-09-27",
-    "cambios": [
-      "Túnel fijo opcional, vigilancia y pestaña Sitio en admin"
-    ]
-  },
-  {
-    "version": "1.14",
-    "fecha": "2026-09-26",
-    "cambios": [
-      "Correcciones de intro/historial y admin /tefi"
-    ]
-  }
-]
+[
+  {
+    "version": "2.0",
+    "fecha": "2026-10-01",
+    "cambios": [
+      "Keepalive Render cada 2 horas",
+      "Pie de página en un solo renglón",
+      "Estadísticas de escenario en misiones",
+      "Cartas: imágenes de tesoro, caballos y cañones; sin respuestas obtenidas",
+      "Estadísticas con caballos y cañones",
+      "Renovación de preguntas cada 3 días",
+      "Fix acceso admin /tefi en Render (env ADMIN_USER/ADMIN_PASS)"
+    ]
+  },
+  {
+    "version": "1.16",
+    "fecha": "2026-09-28",
+    "cambios": [
+      "PWA instalable en Android (manifest + service worker)",
+      "Preparación para GitHub y Render.com",
+      "Servidor listo para HTTPS/0.0.0.0 y secretos por entorno",
+      "Sin canal APK/AAB"
+    ]
+  },
+  {
+    "version": "1.15",
+    "fecha": "2026-09-27",
+    "cambios": [
+      "Túnel fijo opcional, vigilancia y pestaña Sitio en admin"
+    ]
+  },
+  {
+    "version": "1.14",
+    "fecha": "2026-09-26",
+    "cambios": [
+      "Correcciones de intro/historial y admin /tefi"
+    ]
+  }
+]
+
