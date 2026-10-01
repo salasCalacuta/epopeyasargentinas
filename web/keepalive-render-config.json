@@ -1,4 +1,4 @@
 {
-  "url": "https://epopeyas-argentinas.onrender.com",
-  "nota": "Reemplazá url por la URL real de tu Web Service en Render (sin /health)."
+  "url": "https://epopeyasargentinas.onrender.com",
+  "nota": "URL real del Web Service en Render (sin /health)."
 }
