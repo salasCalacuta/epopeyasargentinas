@@ -9,11 +9,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Epopeyas" />
   <meta name="description" content="Epopeyas Argentinas — juego educativo sobre la invasión inglesa de 1806." />
-  <title>Epopeyas Argentinas 2.0</title>
+  <title>Epopeyas Argentinas 3.0</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="styles.css?v=200" />
+  <link rel="stylesheet" href="styles.css?v=300" />
 </head>
 <body>
   <div class="app">
@@ -145,6 +145,7 @@
 
     <section class="screen" id="sc-cierre">
       <div class="hero kenburns anim-in" id="cierre-img"></div>
+      <p class="cierre-leyenda" id="cierre-leyenda" hidden>Continuará....</p>
       <div class="block anim-in">
         <h2 id="cierre-titulo"></h2>
         <p id="cierre-texto"></p>
@@ -167,7 +168,11 @@
         <p class="hint">Elegí un punto guardado para retomar.</p>
         <div class="historial-list" id="historial-list"></div>
         <button class="act wide" id="btn-guardar-punto" type="button">Guardar punto actual</button>
-        <button class="primary wide" id="btn-historial-cerrar" type="button">Cerrar</button>
+        <button class="primary wide" id="btn-historial-cerrar" type="button">Cancelar</button>
+        <nav class="historial-legal" aria-label="Documentos legales">
+          <a class="legal-btn" href="privacidad.html" target="_blank" rel="noopener noreferrer">Políticas</a>
+          <a class="legal-btn" href="condiciones.html" target="_blank" rel="noopener noreferrer">Condiciones</a>
+        </nav>
       </div>
     </div>
     <div class="overlay" id="ov-stats">
@@ -283,16 +288,14 @@
         <button class="primary wide" id="btn-ads-continuar" type="button">Continuar</button>
       </div>
     </div>
-    <footer class="bottom-nav" aria-label="Navegación y legales">
-      <a class="legal-btn" href="privacidad.html" target="_blank" rel="noopener noreferrer">Políticas</a>
-      <a class="legal-btn" href="condiciones.html" target="_blank" rel="noopener noreferrer">Condiciones</a>
+    <footer class="bottom-nav" aria-label="Navegación">
       <button type="button" id="btn-inicio">Inicio</button>
       <button type="button" id="btn-pausa">Pausa</button>
       <button type="button" id="btn-volver">Volver</button>
     </footer>
   </div>
-  <script src="preguntas-banco.js?v=200"></script>
-  <script src="game.js?v=200"></script>
+  <script src="preguntas-banco.js?v=300"></script>
+  <script src="game.js?v=300"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {

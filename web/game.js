@@ -42,7 +42,7 @@ const STORAGE_KEY = "epopeyas_v112";
 const STATS_KEY = "epopeyas_v112_stats";
 const PREGUNTAS_CICLO_KEY = "epopeyas_preguntas_ciclo_v20";
 const PREGUNTAS_CICLO_MS = 3 * 24 * 60 * 60 * 1000;
-const VERSION_JUEGO = "2.0";
+const VERSION_JUEGO = "3.0";
 const TXT_DADOS = "Un dado por bando. Cada punto = 100 soldados. Las bajas es por diferencia de puntaje.";
 
 const TELEMETRY = {
@@ -861,7 +861,7 @@ function actualizarBotonAccion() {
   if (!btn) return;
   G.modoCombate = "preguntas";
   btn.textContent = "Responder pregunta";
-  if (tipoRow) tipoRow.hidden = true;
+  if (tipoRow) tipoRow.hidden = false;
   if (bajas) bajas.textContent = "";
   actualizarTiposTropa();
   habilitarCombate();
@@ -1399,10 +1399,16 @@ function usarReservaRetiro() {
   return true;
 }
 
-function abrirCierre(img, titulo, texto, accion) {
+function abrirCierre(img, titulo, texto, accion, opts) {
   document.getElementById("cierre-img").style.backgroundImage = `url('${img}')`;
   document.getElementById("cierre-titulo").textContent = titulo;
   document.getElementById("cierre-texto").textContent = texto;
+  const leyenda = document.getElementById("cierre-leyenda");
+  if (leyenda) {
+    const showLeyenda = !!(opts && opts.continuara);
+    leyenda.hidden = !showLeyenda;
+    if (showLeyenda) leyenda.textContent = opts.leyenda || "Continuará....";
+  }
   G.cierreAccion = accion;
   show("sc-cierre");
 }
@@ -1465,8 +1471,14 @@ function victoriaPatriots() {
     setMision("victoria", "completada");
     STATS.victorias += 1;
     persistirStats();
-    guardarPunto("Victoria final");
-    abrirCierre("assets/cinematica-beresford-parte.jpg", "¡Victoria!", "Liniers exige la rendición. Los ingleses se retiran por Quilmes. Suman 2000 soldados más y Liniers es nombrado Virrey.", irInicio);
+    guardarPunto("Victoria final · Nivel 1");
+    abrirCierre(
+      "assets/cinematica-beresford-parte.jpg",
+      "¡Victoria! Nivel 1 completo",
+      "Beresford es expulsado. Liniers exige la rendición. Los ingleses se retiran por Quilmes. Suman 2000 soldados más y Liniers es nombrado Virrey.",
+      irInicio,
+      { continuara: true, leyenda: "Continuará...." }
+    );
   }
 }
 
@@ -1662,6 +1674,7 @@ function responderPregunta(elegida) {
   preguntaRespondida = true;
   const pts = p.bonus ? 200 : 100;
   const ok = elegida === p.correcta;
+  const tipo = tipoJugador();
   const img = document.getElementById("preg-img");
   let txt;
   let procerNom = "";
@@ -1682,7 +1695,17 @@ function responderPregunta(elegida) {
     G.patriotas = Math.max(0, G.patriotas - pts);
     STATS.incorrectas += 1;
     registrarPerdidas(pts);
-    txt = `<span class="mark-fail" aria-label="Incorrecto">✗</span> Perdés ${pts} soldados. Respuesta: ${p.opciones[p.correcta]}`;
+    let extra = "";
+    if (tipo === "caballos") {
+      const baja = Math.min(6, G.caballosP);
+      G.caballosP = Math.max(0, G.caballosP - 6);
+      extra = ` · −${baja} caballos`;
+    } else if (tipo === "canones") {
+      const baja = Math.min(6, G.canonesP);
+      G.canonesP = Math.max(0, G.canonesP - 6);
+      extra = ` · −${baja} cañones`;
+    }
+    txt = `<span class="mark-fail" aria-label="Incorrecto">✗</span> Perdés ${pts} soldados${extra}. Respuesta: ${p.opciones[p.correcta]}`;
     if (img) {
       img.style.backgroundImage = "url('assets/combate-derrota.jpg')";
       img.classList.add("fail");
@@ -1708,10 +1731,12 @@ function responderPregunta(elegida) {
     }
   }
   mostrarMasInfoPregunta(p);
-  log(ok ? `✓ Correcto (−${pts} ingleses)` : `✗ Incorrecto (−${pts} patriotas)`);
+  log(ok ? `✓ Correcto (−${pts} ingleses)` : `✗ Incorrecto (−${pts} patriotas${tipo === "caballos" ? " · −6 caballos" : tipo === "canones" ? " · −6 cañones" : ""})`);
   animarFuego();
   pintarBarras();
   pintarSoldados();
+  actualizarUI();
+  actualizarTiposTropa();
   persistir();
   document.getElementById("btn-preg-continuar").hidden = false;
   document.getElementById("btn-preg-continuar").onclick = () => {
@@ -1726,6 +1751,11 @@ function responderPregunta(elegida) {
 
 function ejecutarAccionCombate() {
   G.modoCombate = "preguntas";
+  const tipo = tipoJugador();
+  if (!validarTipo(tipo)) {
+    habilitarCombate();
+    return;
+  }
   abrirPregunta();
 }
 
@@ -2154,7 +2184,7 @@ document.addEventListener("click", (e) => {
 
 on("btn-ads-continuar", "click", cerrarPublicidad);
 
-fetch("preguntas.json?v=200", { credentials: "include" })
+fetch("preguntas.json?v=300", { credentials: "include" })
   .then((r) => r.json())
   .then((data) => {
     if (Array.isArray(data) && data.length) {

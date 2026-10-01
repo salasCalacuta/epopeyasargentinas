@@ -206,29 +206,25 @@ body { display: flex; justify-content: center; padding: 10px; min-height: 100dvh
   flex: 0 0 auto;
   z-index: 8;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 4px;
-  padding: 6px 8px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  padding: 8px 10px;
   background: linear-gradient(0deg, #4a2e1c, #2d1a10);
   border-top: 2px solid var(--gold);
   align-items: stretch;
 }
-.bottom-nav button,
-.bottom-nav .legal-btn {
+.bottom-nav button {
   margin: 0;
-  padding: 6px 2px;
+  padding: 10px 8px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #5a4330;
   color: #fff8e8;
   font-weight: 800;
-  font-size: .62rem;
+  font-size: .78rem;
   line-height: 1.15;
   cursor: pointer;
   min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .app {
   padding-bottom: 0;
@@ -335,12 +331,38 @@ body { display: flex; justify-content: center; padding: 10px; min-height: 100dvh
 }
 .privacidad-link a { color: #6b3a12; font-weight: 700; }
 .legal-nav { display: none; }
-.bottom-nav .legal-btn {
+.historial-legal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+.historial-legal .legal-btn,
+.legal-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 8px;
+  background: #5a4330;
+  color: #fff8e8;
+  font-weight: 800;
+  font-size: .72rem;
   text-decoration: none;
   text-align: center;
+  cursor: pointer;
+}
+.cierre-leyenda {
+  margin: 0;
+  padding: 10px 12px 0;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: var(--gold);
+  text-shadow: 0 1px 0 #1a1008;
 }
 .stats-list {
   list-style: none;

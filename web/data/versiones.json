@@ -1,5 +1,14 @@
 [
   {
+    "version": "3.0",
+    "fecha": "2026-10-01",
+    "cambios": [
+      "Políticas y Condiciones dentro de Historial (debajo de Cancelar)",
+      "Ataque con caballos o cañones: −6 unidades si la respuesta es errónea",
+      "Expulsión de Beresford cierra el Nivel 1 con leyenda Continuará...."
+    ]
+  },
+  {
     "version": "2.0",
     "fecha": "2026-10-01",
     "cambios": [
@@ -20,20 +29,6 @@
       "Preparación para GitHub y Render.com",
       "Servidor listo para HTTPS/0.0.0.0 y secretos por entorno",
       "Sin canal APK/AAB"
-    ]
-  },
-  {
-    "version": "1.15",
-    "fecha": "2026-09-27",
-    "cambios": [
-      "Túnel fijo opcional, vigilancia y pestaña Sitio en admin"
-    ]
-  },
-  {
-    "version": "1.14",
-    "fecha": "2026-09-26",
-    "cambios": [
-      "Correcciones de intro/historial y admin /tefi"
     ]
   }
 ]
