@@ -1,5 +1,8 @@
-# Ping al health de Render para evitar sleep del plan free (cada 2 h).
+# Ping al health de Render para evitar sleep del plan free (cada ~10 min).
 $ErrorActionPreference = "Continue"
+try {
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+} catch {}
 $Root = $PSScriptRoot
 $AgenteDir = Join-Path $Root ".agente"
 $ConfigPath = Join-Path $Root "keepalive-render-config.json"
